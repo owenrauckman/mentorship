@@ -3,7 +3,7 @@
     <!-- TODO: add nav and stuff here -->
     <!-- maybe move this idk -->
     <router-view></router-view>
-    <Menu></Menu>
+    <Menu2></Menu2>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ import Landing from './components/Landing'
 import Search from './components/Search'
 import Profile from './components/Profile'
 import Login from './components/Login'
-import Menu from './components/Menu'
+import Menu2 from './components/Menu'
 
 export default {
   name: 'app',
@@ -23,7 +23,7 @@ export default {
     Landing,
     Profile,
     Login,
-    Menu
+    Menu2
   }
 }
 </script>

@@ -14,6 +14,10 @@ import Profile from './components/Profile'
 import Login from './components/Login'
 import Menu from './components/Menu'
 
+// Use Vue Touch
+var VueTouch = require('vue-touch')
+Vue.use(VueTouch)
+
 // Instantiate the Router
 Vue.use(VueRouter)
 const router = new VueRouter({

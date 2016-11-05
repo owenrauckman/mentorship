@@ -10,7 +10,7 @@ exports.getUsers = function(req, res){
 
 // --- Get Users By Skill Desired --- //
 exports.getUsersBySkillsPossessed = function(req, res){
-  User.find({"skillsPossessed": req.params.skill}, function(err, users){
+  User.find({"skillsPossessed": { $elemMatch : { $regex : req.params.skill, $options : 'i' }}}, function(err, users){
     if(err){
       return res.status(500).json({err: err.message});
     }

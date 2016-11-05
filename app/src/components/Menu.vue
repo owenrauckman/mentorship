@@ -1,4 +1,5 @@
 <template>
+
   <div class="menu">
     <nav class="m__menu">
       <ul class="m__menu__list">
@@ -16,7 +17,11 @@
         </li>
       </ul>
     </nav>
+
+    <!-- background image on all pages -->
+    <div class="m__background"></div>
   </div>
+
 </template>
 
 <script>
@@ -68,6 +73,7 @@ export default {
     width: 100%;
     z-index: -1;
     height: 100%;
+    top: 0;
     background-image: url('../assets/background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
