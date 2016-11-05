@@ -54,6 +54,13 @@ router.route('/users')
   .get(passportController.ensureAuthenticated, userController.getUsers);
 router.route('/users/:username')
   .get(userController.getUser);
+// By skills wanted / desired
+router.route('/users/skillsPossessed/:skill')
+  .get(userController.getUsersBySkillsPossessed);
+router.route('/users/skillsDesired/:skill')
+  .get(userController.getUsersBySkillsDesired);
+  
+// Edit User
 router.route('/edit/:id')
   .put(userController.editUser);
 router.route('/delete/:id')

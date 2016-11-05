@@ -8,6 +8,26 @@ exports.getUsers = function(req, res){
   });
 };
 
+// --- Get Users By Skill Desired --- //
+exports.getUsersBySkillsPossessed = function(req, res){
+  User.find({"skillsPossessed": req.params.skill}, function(err, users){
+    if(err){
+      return res.status(500).json({err: err.message});
+    }
+    res.json(users);
+  });
+};
+
+// --- Get Users By Skill Wanted --- //
+exports.getUsersBySkillsDesired = function(req, res){
+  User.find({"skillsDesired": req.params.skill}, function(err, users){
+    if(err){
+      return res.status(500).json({err: err.message});
+    }
+    res.json(users);
+  });
+};
+
 // --- Get User --- //
 exports.getUser = function(req, res){
   User.findOne({"username": req.params.username}, function(err, user){
