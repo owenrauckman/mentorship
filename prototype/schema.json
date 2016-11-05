@@ -1,0 +1,30 @@
+{
+  "username": "jakedupree",
+  "name": "Jake",
+  "email": "jdupree@gmail.com",
+  "password": "password",
+  "profession": "Social Media Creator",
+  "company": "VML",
+  "city": "Kansas City",
+  "state": "Kansas",
+  "zip": "66212",
+  "statement": "I love social and I love people. I have a strong desire to get better and to help other people",
+  "skillsPossessed": [
+      "Sales Force",
+      "Google Analytics",
+      "Instagram"
+  ],
+  "skillsDesired": [
+      "Agile Methodologies",
+      "HTML",
+      "CSS"
+  ],
+  "mentoring": [
+      "Demar Johnson",
+      "Angelica Sway"
+  ],
+  "mentoredBy": [
+      "Justin Markel",
+      "Ross Reynolds"
+  ]
+}
