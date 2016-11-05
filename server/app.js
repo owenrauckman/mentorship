@@ -26,7 +26,7 @@ app.use(function(req, res, next) {
 });
 
 // --- BodyParser Middleware --- //
-app.use(bodyParser.json());
+app.use(bodyParser.json({extended: false}));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 

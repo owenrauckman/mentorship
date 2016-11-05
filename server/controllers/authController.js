@@ -11,22 +11,43 @@ exports.registerUser = function(req, res, err){
   if(!req.body.email || !req.body.password || !req.body.name || !req.body.username){
     res.json({ sucess: false, message: 'Please enter an email/password to register'}); //TODO: make this route
   }
-  if(err){
-    res.json({msg: 'username or email already exists'}); // flash msg here? probably just data
-  }
-  else{
-    var newUser = new User({
-      email: req.body.email,
-      password: req.body.password,
-      username: req.body.username,
-      name: req.body.name
-    });
-    //takes in the new user and the callback from the model
-    User.createUser(newUser, function(err, user){
-      if(err) throw err;
-    });
-    res.json({msg: 'going back to sign in link'});
-  }
+
+  User.count({username: req.body.username, email: req.body.email}, function(err, user){
+    // General Error Handling
+    if(err) throw err;
+    else{
+      var newUser = new User({
+        username: req.body.username,
+        password: req.body.password,
+        name: req.body.name,
+        email: req.body.email,
+        profession: req.body.profession,
+        company: req.body.company,
+        city: req.body.city,
+        state: req.body.state,
+        zip: req.body.zip,
+        statement: req.body.statement,
+        skillsPossessed: req.body.skillsPossessed,
+        skillsDesired: req.body.skillsDesired,
+        mentoring: req.body.mentoring,
+        mentoredBy: req.body.mentoredBy
+      });
+      //takes in the new user and the callback from the model
+      User.createUser(newUser, function(err, user){
+        // 1100 handles dupe keys
+        if ( err && err.code !== 11000 ) {
+          return res.send('Something bad happened. Error, whoops!');
+        }
+        //duplicate key
+        else if ( err && err.code === 11000 ) {
+          return res.json({msg: "That username or email aleady exists 1100"});
+        }
+        else{
+          return res.json({msg: 'going back to sign in link ' + newUser.username }); //success TODO: // redirect or something
+        }
+      });
+    }
+  });
 };
 
 // --- Login User --- //
