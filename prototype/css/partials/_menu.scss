@@ -1,0 +1,38 @@
+.m{
+  &__menu{
+    width: 100%;
+    background: $light-gray;
+    position: fixed;
+    bottom: 0;
+    z-index: +2;
+    &__list{
+      height: 50px;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      @include breakpoint(tablet){
+        float: right;
+        width: 400px;
+        height: 60px;
+      }
+    }
+    &__item{
+      flex: 1 0 auto;
+      display: flex;
+      justify-content: center;
+      &:hover{
+        cursor: pointer;
+      }
+      &__icon{
+        height: 30px;
+        width: 30px;
+        &--active{
+          path{
+            fill: $pink;
+          }
+        }
+      }
+    }
+  }
+}

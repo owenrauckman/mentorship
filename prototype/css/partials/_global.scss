@@ -1,0 +1,36 @@
+html, body{
+  height: 100%;
+}
+body{
+  margin: 0 auto;
+  font-size: 16px;
+}
+.m__background{
+  position: fixed;
+  content: "";
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  height: 100%;
+  background-image: url('../img/background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+  &:after{
+    position: absolute;
+    top: 0;
+    content: "";
+    height: 100%;
+    width: 100%;
+    background-color: transparentize($teal, 0.1);
+  }
+}
+
+// RESETS
+h1, h2, h3, h4, h5{
+  margin: 0;
+}
+ul, ol{
+  margin: 0;
+  padding: 0;
+}

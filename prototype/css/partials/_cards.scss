@@ -1,0 +1,250 @@
+.m{
+  &__search{
+    height: calc(100vh - 50px);
+    @include breakpoint(tablet){
+      height: calc(100vh - 60px);
+    }
+    &__filter{
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      &__icon{
+        background: transparent;
+        border: none;
+        outline: none;
+        svg{
+          margin-right: 1rem;
+          height: 25px;
+          width: 25px;
+          path{
+            fill: transparentize($white, 0.25);
+          }
+        }
+        &:hover{
+          cursor: pointer;
+        }
+      }
+    }
+    &__results{
+      width: 100%;
+      height: calc(100% - 50px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      @include breakpoint(tablet){
+        height: calc(100% - 60px);
+      }
+      &__profile{
+        position: relative;
+        background: $white;
+        height: auto;
+        min-height: calc(100% - 1rem); //double padding above
+        width: calc(100% - 2rem); //double padding above
+        max-width: 350px;
+        margin: 0 auto;
+        border-radius: 10px;
+        &__header{
+          position: relative;
+          border-radius: 10px 10px 0px 0px;
+          background: linear-gradient( 45deg, rgb(43, 192, 152), rgb(36, 160, 127) );
+          height: 80px;
+        }
+        &__face{
+          position: absolute;
+          margin: 0 0 0 1rem;
+          bottom: calc(-80px/2); //same as height of face
+          height: 80px;
+          width: 80px;
+          border-radius: 10px;
+        }
+        &__connect{
+          position: absolute;
+          right: 1rem;
+          top: 50%;
+          transform: translateY(-50%);
+          &:link, &:visited, &:active{
+            font-family: $lato;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            text-decoration: none;
+            padding: 0.5rem 1.5rem;
+            color: $white;
+            border: solid 1px $white;
+            border-radius: 5px;
+            transition: background 0.3s ease-in, color 0.3s ease-in;
+          }
+          &:hover{
+            background: transparentize($teal, 0.5);
+          }
+        }
+        &__info{
+          padding: 1rem 1.5rem;
+          color: $dark-gray;
+          font-family: $lato;
+          text-align: right;
+          border-bottom: solid 1px $light-gray;
+          &__name{
+            margin: 2rem 0 0.25rem 0 ; //same height as profile pic
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 1px;
+          }
+          &__job{
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+          }
+          &__description{
+            font-size: 0.75rem;
+            color: $medium-dark-gray;
+          }
+        }
+        &__skills{
+          &__type{
+            display: flex;
+            justify-content: center;
+            &__item{
+              color: $medium-dark-gray;
+              font-family: $lato;
+              text-transform: uppercase;
+              margin: 1rem 1rem 0.5rem 1rem;
+              padding-bottom: 1rem;
+              font-size: 1rem;
+              &--active{
+                color: $dark-gray;
+                border-bottom: solid 1px $dark-gray;
+              }
+            }
+          }
+          &__list{
+            font-family: $lato;
+            color: darken($medium-gray, 20%);
+            font-size: 0.75rem;
+            margin: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            &__item{
+              text-transform: uppercase;
+              text-align: center;
+              padding: 0.5rem 1rem;
+              margin: 0.5rem;
+              border: solid 1px lighten($medium-gray, 10%);
+              border-radius: 5px;
+              list-style: none;
+            }
+          }
+        }
+      }
+    }
+    &__filters{
+      background: $white;
+      position: absolute;
+      z-index: +2;
+      height: 100vh;
+      width: 100%;
+      &__x{
+        height: 40px;
+        width: 40px;
+        right: 1rem;
+        top: 1rem;
+        position: absolute;
+        border: none;
+        background: transparent;
+        svg{
+          path{
+            fill: $medium-gray;
+          }
+        }
+        &:hover{
+          cursor: pointer;
+          svg{
+            path{
+              fill: $dark-gray;
+            }
+          }
+        }
+      }
+      &__form{
+        max-width: 350px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 auto;
+        &__input{
+          font-family: $lato;
+          text-transform: uppercase;
+          background: transparent;
+          font-size: 1rem;
+          border: none;
+          color: $medium-gray;
+          border-bottom: solid 1px $medium-gray;
+          margin: 3rem 0;
+          padding: 0 0 2rem 2rem;
+          &:focus{
+            color: $dark-gray;
+            border-bottom: solid 1px $dark-gray;
+            outline: 0;
+          }
+          &::-webkit-input-placeholder {
+             color: $medium-gray;
+          }
+        }
+        &__radio{
+          display: flex;
+          flex-direction: row;
+          &__item{
+            flex-basis: 50%;
+            color: $medium-gray;
+            text-align: center;
+            padding: 1rem 2rem;
+            font-family: $lato;
+            text-transform: uppercase;
+            font-size: 1rem;
+            transition: background 0.3s ease-in;
+            &:first-child{
+              margin: 1rem 1rem 1rem 0;
+            }
+            &:last-child{
+              margin: 1rem 0 1rem 1rem;
+            }
+            &:hover{
+              cursor: pointer;
+              background: $light-gray;
+            }
+            &--active{
+              color: $dark-gray;
+              border: solid 1px $dark-gray;
+            }
+          }
+        }
+        &__go{
+          height: 40px;
+          width: 40px;
+          align-self: center;
+          background: transparent;
+          outline: 0;
+          border: none;
+          transition: transform 0.3s ease-in;
+          &:hover{
+            cursor: pointer;
+            transform: translateX(0.5rem);
+            svg{
+              path{
+                fill: darken($pink, 10%);
+              }
+            }
+          }
+          svg{
+            path{
+              fill: $pink;
+            }
+          }
+        }
+      }
+    }
+  }
+}
