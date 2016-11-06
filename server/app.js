@@ -50,16 +50,16 @@ var authController = require('./controllers/authController');
 var userController = require('./controllers/userController');
 
 // --- API Routes --- //
-router.route('/users')
-  .get(passportController.ensureAuthenticated, userController.getUsers);
+// router.route('/users') // probably don't need this since it will be stressful on the db
+//   .get(passportController.ensureAuthenticated, userController.getUsers);
 router.route('/users/:username')
   .get(userController.getUser);
-// By skills wanted / desired
-router.route('/users/skillsPossessed/:skill')
-  .get(userController.getUsersBySkillsPossessed);
+// By skills wanted / desired skillsPossessed/:skill?/:locationz
+router.route('/search')
+  .get(userController.getUsersBySearch);
 router.route('/users/skillsDesired/:skill')
   .get(userController.getUsersBySkillsDesired);
-  
+
 // Edit User
 router.route('/edit/:id')
   .put(userController.editUser);
