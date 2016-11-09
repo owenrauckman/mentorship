@@ -15,7 +15,6 @@ import Search from './components/Search'
 import Profile from './components/Profile'
 import Login from './components/Login'
 import Menu2 from './components/Menu'
-
 export default {
   name: 'app',
   components: {

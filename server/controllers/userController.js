@@ -49,7 +49,7 @@ exports.getUsersBySearch = function(req, res){
         else{
           return res.json({"noResults": noResults});
         }
-      });
+      }).limit(10); //max of 10
     }
     else{
       return res.json({"noResults": noResults});

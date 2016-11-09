@@ -26,11 +26,16 @@
         <button v-touch:tap="showSearchMenu" id="js__m__search__filter__icon" class="m__search__filter__icon">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M200 14.317L125.753 101.3v61.31l-1.794 3.37-42.478 28.59-8.105-4.315V100.28L0 14.318 4.1 5.43H195.9L200 14.317zM25.57 20.72l62.153 72.817.944 2.56v75.206l21.795-14.67V97.117l.944-2.56L174.43 20.72H25.57z" fill="#fff" fill-opacity=".749" fill-rule="nonzero"/></svg>        </button>
       </div>
+      <div class="m__search__results__dots">
+        <span v-for="n in users.length" class="m__search__results__dots__dot">&middot;</span>
+      </div>
       <div class="m__search__results">
         <div id="m__search__results__no-results" class="m__search__results__no-results">
           <span>{{noResults}}</span>
         </div>
-        <div v-for="user in users" class="m__search__results__profile" v-touch:swipeleft="onSwipeLeft">
+        <!-- arrow -->
+        <svg class="m__search__results__arrow m__search__results__arrow--left" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M58.323 5.553c.287.04.578.076.86.13.58.108 1.144.258 1.697.453 1.102.386 2.148.94 3.09 1.632.625.467.754.612 1.325 1.143L151.3 94.916c.197.214.403.42.594.643.575.663 1.067 1.393 1.48 2.166 1.652 3.13 1.794 6.92.382 10.163-.354.8-.795 1.57-1.318 2.272-.46.63-.612.757-1.14 1.328l-79.6 79.6c-.57.527-.696.68-1.327 1.14-.94.698-1.98 1.25-3.086 1.632-1.38.484-2.85.708-4.307.652-1.168-.045-2.334-.264-3.436-.65-1.1-.385-2.148-.938-3.088-1.632-2.123-1.566-3.68-3.846-4.356-6.394-.305-1.132-.437-2.307-.395-3.476.08-2.047.7-4.06 1.79-5.796.312-.493.66-.963 1.037-1.407.194-.22.4-.427.6-.643l71.312-71.313L48.72 25.485l-.595-.643c-.487-.605-.63-.747-1.043-1.408-.775-1.237-1.32-2.618-1.59-4.06-.215-1.144-.26-2.328-.132-3.49.133-1.156.436-2.3.903-3.37 1.177-2.692 3.366-4.88 6.057-6.058 1.07-.467 2.215-.77 3.372-.903.774-.085.973-.06 1.75-.064.295.024.585.044.88.067z" fill="#A4A7A2" fill-rule="nonzero"/></svg>
+        <div class="m__search__results__profile" v-for="user in users" v-touch:swipe="onSwipe">
           <div class="m__search__results__profile__header">
             <img class="m__search__results__profile__face" src="../assets/face.jpg"/>
             <a href="#" class="m__search__results__profile__connect">Connect</a>
@@ -54,9 +59,10 @@
             </ul>
           </div>
         </div>
+        <!-- arrow -->
+        <svg class="m__search__results__arrow" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M58.323 5.553c.287.04.578.076.86.13.58.108 1.144.258 1.697.453 1.102.386 2.148.94 3.09 1.632.625.467.754.612 1.325 1.143L151.3 94.916c.197.214.403.42.594.643.575.663 1.067 1.393 1.48 2.166 1.652 3.13 1.794 6.92.382 10.163-.354.8-.795 1.57-1.318 2.272-.46.63-.612.757-1.14 1.328l-79.6 79.6c-.57.527-.696.68-1.327 1.14-.94.698-1.98 1.25-3.086 1.632-1.38.484-2.85.708-4.307.652-1.168-.045-2.334-.264-3.436-.65-1.1-.385-2.148-.938-3.088-1.632-2.123-1.566-3.68-3.846-4.356-6.394-.305-1.132-.437-2.307-.395-3.476.08-2.047.7-4.06 1.79-5.796.312-.493.66-.963 1.037-1.407.194-.22.4-.427.6-.643l71.312-71.313L48.72 25.485l-.595-.643c-.487-.605-.63-.747-1.043-1.408-.775-1.237-1.32-2.618-1.59-4.06-.215-1.144-.26-2.328-.132-3.49.133-1.156.436-2.3.903-3.37 1.177-2.692 3.366-4.88 6.057-6.058 1.07-.467 2.215-.77 3.372-.903.774-.085.973-.06 1.75-.064.295.024.585.044.88.067z" fill="#A4A7A2" fill-rule="nonzero"/></svg>
       </div>
     </section>
-
   </div>
 </template>
 
@@ -90,20 +96,35 @@ export default {
             if(response){
               if(response.noResults){
                 this.noResults = response.noResults;
-                $('#m__search__results__no-results').css("display", "flex");
-                $('.m__search__results__profile').hide();
               }
               else{
+                this.noResults = ""; //set back to this so we can compare in the After
                 $('.m__search__results__profile').show();
-                $('#m__search__results__no-results').hide();
                 this.users = response;
               }
-              // hide the search filters regardless
               $('#js__m__search__filters').hide();
             }
             else{
               console.log('not working');
             }
+        }).then(function(){
+          // if there are no results, hide stuff
+          if($(window).width >= 680 && response.length > 1){
+            $('.m__search__results__arrow').show();
+          }
+          else if(this.noResults.length < 1){
+            // only show the first card end of call
+            $('.m__search__results__profile').hide();
+            $('.m__search__results__profile').first().show();
+            $('.m__search__results__dots').show();
+            $('.m__search__results__dots__dot').first().addClass('m__search__results__dots__dot--active');
+          }
+          else{
+            $('.m__search__results__arrow').hide();
+            $('.m__search__results__dots').hide();
+            $('.m__search__results__profile').hide();
+            $('#m__search__results__no-results').css("display", "flex");
+          }
         });
       }
     },
@@ -122,24 +143,28 @@ export default {
       $('.m__search__filters__form__radio__item').removeClass('m__search__filters__form__radio__item--active');
       $(e.target).addClass('m__search__filters__form__radio__item--active');
     },
-    onSwipeLeft(e){
-      console.log('swiped! + '+  e.target);
-      // $(e.target).find('.m__search__results__profile').hide();
-      // alert(e.target.className);
-      // $(e.currentTarget).hide();
-
+    onSwipe(e){
+      // 2 left (next) 4 right (prev)
+      if(e.direction == 4){
+        if($(e.target).closest('.m__search__results__profile').prev().hasClass('m__search__results__profile')){
+          $(e.target).closest('.m__search__results__profile').hide();
+          $(e.target).closest('.m__search__results__profile').prev().fadeIn();
+          var index = $('.m__search__results__profile:visible').index() - 2;
+          $('.m__search__results__dots__dot').removeClass('m__search__results__dots__dot--active');
+          $('.m__search__results__dots__dot:eq(' + index  + ')').addClass('m__search__results__dots__dot--active');
+        }
+      }
+      else if(e.direction == 2){
+        if($(e.target).closest('.m__search__results__profile').next().hasClass('m__search__results__profile')){
+          $(e.target).closest('.m__search__results__profile').hide();
+          $(e.target).closest('.m__search__results__profile').next().fadeIn();
+          var index = $('.m__search__results__profile:visible').index() - 2;
+          $('.m__search__results__dots__dot').removeClass('m__search__results__dots__dot--active');
+          $('.m__search__results__dots__dot:eq(' + index  + ')').addClass('m__search__results__dots__dot--active');
+        }
+      }
     }
-
-  },
-  /// test
-  mounted(){
-    this.$nextTick(function () {
-
-
-    })
   }
-
-
 }
 </script>
 <style lang="scss">
@@ -237,11 +262,40 @@ ul, ol{
     }
     &__results{
       width: 100%;
+      max-width: 350px;
+      margin: 0 auto;
       height: calc(100% - 50px);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      display: block;
       @include breakpoint(tablet){
         height: calc(100% - 60px);
+        max-width: 450px;
+        display: flex;
+        align-items: center;
+      }
+      &__arrow{
+        height: 35px;
+        width: 35px;
+        justify-content: center;
+        align-items: center;
+        display: none;
+        @include breakpoint(tablet){
+          display: block;
+        }
+        path{
+          fill: transparentize($white, 0.5);
+          transition: fill 0.3s ease-in;
+        }
+        &:hover{
+          cursor: pointer;
+          path{
+            fill: $white;
+          }
+        }
+        &--left{
+          transform: rotate(180deg);
+        }
       }
       &__no-results{
         display: flex;
@@ -256,6 +310,23 @@ ul, ol{
         display: none;
         @include breakpoint(tablet){
           height: calc(100% - 60px);
+        }
+      }
+      &__dots{
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        top: 1.5rem;
+        left: 0; right: 0;
+        margin: 0 auto;
+        &__dot{
+          margin: 0 0.25rem;
+          color: $white;
+          font-size: 1.5rem;
+          line-height: 0;
+          &--active{
+            font-size: 3rem;
+          }
         }
       }
       &__profile{
