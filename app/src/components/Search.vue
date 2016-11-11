@@ -114,6 +114,7 @@ export default {
           }
           else if(this.noResults.length < 1){
             // only show the first card end of call
+            $('.m__search__results__arrow').hide();
             $('.m__search__results__profile').hide();
             $('.m__search__results__profile').first().show();
             $('.m__search__results__dots').show();
