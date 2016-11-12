@@ -48,6 +48,16 @@ var router = express.Router();
 var passportController = require('./controllers/passportController');
 var authController = require('./controllers/authController');
 var userController = require('./controllers/userController');
+var chatController = require('./controllers/chatController');
+
+// --- Chat Routes --- //
+router.route('/chat/')
+  .get(passportController.ensureAuthenticated, chatController.getConversations);
+router.route('/chat/:conversationId')
+  .get(passportController.ensureAuthenticated, chatController.getConversation)
+  .post(passportController.ensureAuthenticated, chatController.sendReply);
+router.route('/chat/new/:recipient')
+  .post(passportController.ensureAuthenticated, chatController.newConversation);
 
 // --- API Routes --- //
 // router.route('/users') // probably don't need this since it will be stressful on the db
