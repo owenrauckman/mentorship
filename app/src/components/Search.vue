@@ -91,7 +91,7 @@ export default {
         $('#js__m__search__filters__form__input__skills').addClass('m__search__filters__form__input--error');
       }
       else{
-        $.ajax({method: "GET", url: `http://192.168.1.66:3000/api/search?skill=${that.searchData.skill}&near=${that.searchData.near}&mentorType=${that.searchData.mentorType}`, context: this, crossDomain: true})
+        $.ajax({method: "GET", url: `http://localhost:3000/api/search?skill=${that.searchData.skill}&near=${that.searchData.near}&mentorType=${that.searchData.mentorType}`, context: this, crossDomain: true})
           .done(function(response) {
             if(response){
               if(response.noResults){

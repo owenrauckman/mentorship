@@ -34,6 +34,13 @@ exports.registerUser = function(req, res, err){
       });
       //takes in the new user and the callback from the model
       User.createUser(newUser, function(err, user){
+        // Check if username or email already exists
+        User.count({ $or: [{"username": newUser.username}, {"email": newUser.email} ] }), function(err, users){
+          if(err){
+            return res.status(500).json({message: err.message});
+          }
+          return res.json({message: "That username or email address is already in use."});
+        }
         // 1100 handles dupe keys
         if ( err && err.code !== 11000 ) {
           return res.send({message: "Whoops! Something didn't work. Please try again"});
