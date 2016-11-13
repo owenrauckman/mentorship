@@ -12,6 +12,9 @@ exports.getConversations = function(req, res, next){
         res.send({error: err});
         return next(err);
       }
+      if(!conversations || conversations.length == 0){
+        return res.send({"msg": "This user does not have any conversations"});
+      }
 
       // Set up empty array to hold conversations + most recent message
       var fullConversations = [];
@@ -45,7 +48,7 @@ exports.getConversation = function(req, res, next){
     .sort('-createdAt')
     .populate({
       path: 'author',
-      select: 'profile.firstName profile.lastName'
+      select: 'name'
     })
     .exec(function(err, messages){
       if(err){
@@ -96,7 +99,7 @@ exports.newConversation = function(req, res, next){
 // POST send reply
 exports.sendReply = function(req, res, next){
   var reply = new Message({
-    conversationid: req.params.conversationId,
+    conversationId: req.params.conversationId,
     body: req.body.composedMessage,
     author: req.user._id
   });
