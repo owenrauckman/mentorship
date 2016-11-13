@@ -1,6 +1,6 @@
 <template>
 
-  <div class="menu">
+  <div class="navigation">
     <nav class="m__menu">
       <ul class="m__menu__list">
         <li class="m__menu__item">
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: 'menu',
+  name: 'navigation',
   data () {
     return {
       msg: 'This is the landing page'

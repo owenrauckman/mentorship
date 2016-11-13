@@ -12,7 +12,8 @@ import Landing from './components/Landing'
 import Search from './components/Search'
 import Profile from './components/Profile'
 import Login from './components/Login'
-import Menu from './components/Menu'
+import Navigation from './components/Navigation'
+import Register from './components/Register'
 
 // Use Vue Touch
 var VueTouch = require('vue-touch')

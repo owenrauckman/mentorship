@@ -8,7 +8,7 @@
         </h1>
         <p class="m__landing__copy">Learn something new or help others learn something new. Sail with Mentorship today.</p>
         <button class="m__landing__cta">Sign Up</button>
-        <button class="m__landing__login">Login</button>
+        <router-link to="/login" exact class="m__landing__login">Login</router-link>
       </div>
     </div>
   </div>
@@ -157,6 +157,7 @@ ul, ol{
     right: 1rem;
     background: transparent;
     border: none;
+    text-decoration: none;
   }
 }
 

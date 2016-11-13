@@ -11,26 +11,28 @@ export default {
   name: 'profile',
   data () {
     return {
-      user: {}
+      user: {},
+      isAuthenticated: ""
     }
   },
   methods: {
     // --- Check Authentication --- // //TODO: MOVE THIS TO MAIN VIEW (can be seen on all pages)
-    checkAuthentication(){
-      $.ajax({method: "GET", url: `http://localhost:3000/api/users/${this.$route.params.username}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+    authenticationCheck(){
+      $.ajax({method: "GET", url: "http://localhost:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
-          console.log(this.$route.params.username)
-          this.user = {
-            "username": response.username,
-            "email": response.email,
-            "name": response.name
+          this.isAuthenticated = response.message;
+          if(response.state == "success"){
+            window.location = `/${response.user.username}`;
+          }
+          else{
+            window.location = `/login`;
           }
       });
     }
   },
   mounted(){
     this.$nextTick(function () {
-      this.checkAuthentication();
+      this.authenticationCheck();
     })
   }
 

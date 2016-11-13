@@ -58,12 +58,12 @@ exports.loginUser = function(req, res, next){
     }
     // Generate JSON response reflecting signup
     if(!user){
-      return res.send({ success : false, message : 'signinfailed' });
+      return res.send({ success : false, message : 'login failed, please try again.' });
     }
     //must use req.login for custom login functionality
     req.logIn(user, function(err) {
       if(err) return next(err);
-      return res.send({ success : true, message : 'signin succeeded', user: user});
+      return res.send({ success : true, message : 'logged in', user: user});
     });
   })(req, res, next);
 };
@@ -81,5 +81,5 @@ exports.isLoggedIn = function(req, res){
 // --- Logout User --- //
 exports.logout = function(req, res){
   req.logout(); //that's all. Needing to blow away session data?
-  res.json({msg: 'logged out!'});
+  res.json({message: 'logged out'});
 };
