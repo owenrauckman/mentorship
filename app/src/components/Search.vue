@@ -339,9 +339,12 @@ ul, ol{
         -webkit-overflow-scrolling: touch;
         margin: 0 auto;
         border-radius: 10px;
-        max-height: 380px;
+        max-height: 420px;
         @include breakpoint(tablet){
           min-height: 420px;
+        }
+        @media screen and (max-height: 515px){
+          max-height: 350px;
         }
         &__header{
           position: relative;
