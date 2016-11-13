@@ -109,21 +109,21 @@ export default {
             }
         }).then(function(){
           // if there are no results, hide stuff
-          if($(window).width >= 680 && response.length > 1){
-            $('.m__search__results__arrow').show();
-          }
-          else if(this.noResults.length < 1){
+          if(this.noResults.length < 1){
             // only show the first card end of call
-            $('.m__search__results__arrow').hide();
+            // $('.m__search__results__arrow').hide();
             $('.m__search__results__profile').hide();
             $('.m__search__results__profile').first().show();
             $('.m__search__results__dots').show();
             $('.m__search__results__dots__dot').first().addClass('m__search__results__dots__dot--active');
+            // if ($(window).width() > 680){
+            //   $('.m__search__results__arrow').show();
+            // }
           }
           else{
-            $('.m__search__results__arrow').hide();
             $('.m__search__results__dots').hide();
             $('.m__search__results__profile').hide();
+            // $('.m__search__results__arrow').hide();
             $('#m__search__results__no-results').css("display", "flex");
           }
         });
@@ -266,14 +266,12 @@ ul, ol{
       max-width: 350px;
       margin: 0 auto;
       height: calc(100% - 50px);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
       display: block;
+      display: flex;
+      align-items: center;
       @include breakpoint(tablet){
         height: calc(100% - 60px);
         max-width: 450px;
-        display: flex;
-        align-items: center;
       }
       &__arrow{
         height: 35px;
@@ -282,7 +280,7 @@ ul, ol{
         align-items: center;
         display: none;
         @include breakpoint(tablet){
-          display: block;
+          // display: block;
         }
         path{
           fill: transparentize($white, 0.5);
@@ -334,11 +332,17 @@ ul, ol{
         position: relative;
         background: $white;
         height: auto;
-        min-height: calc(100% - 1rem); //double padding above
+        min-height: 250px;
         width: calc(100% - 2rem); //double padding above
         max-width: 350px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
         margin: 0 auto;
         border-radius: 10px;
+        max-height: 380px;
+        @include breakpoint(tablet){
+          min-height: 420px;
+        }
         &__header{
           position: relative;
           border-radius: 10px 10px 0px 0px;
@@ -438,7 +442,10 @@ ul, ol{
       background: $white;
       position: absolute;
       z-index: +2;
-      height: 100vh;
+      height: calc(100vh - 50px);
+      @include breakpoint(tablet){
+        height: calc(100vh - 60px);
+      }
       width: 100%;
       &__x{
         height: 40px;
@@ -464,7 +471,10 @@ ul, ol{
       }
       &__form{
         max-width: 350px;
-        height: 100vh;
+        height: calc(100vh - 50px);
+        @include breakpoint(tablet){
+          height: calc(100vh - 60px);
+        }
         display: flex;
         flex-direction: column;
         justify-content: center;
