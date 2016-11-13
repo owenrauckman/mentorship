@@ -7,7 +7,7 @@
           <span class="m__landing__heading--bold">Mentorship</span>
         </h1>
         <p class="m__landing__copy">Learn something new or help others learn something new. Sail with Mentorship today.</p>
-        <button class="m__landing__cta">Sign Up</button>
+        <router-link class="m__landing__cta" to="/register" exact>Sign Up</router-link>
         <router-link to="/login" exact class="m__landing__login">Login</router-link>
       </div>
     </div>
@@ -138,6 +138,8 @@ ul, ol{
     margin-top: 2rem;
     background: transparent;
     transition: background 0.2s ease-out, color 0.2s ease-out;
+    text-decoration: none;
+    display: inline-block;
     &:hover{
       cursor: pointer;
       background: $white;

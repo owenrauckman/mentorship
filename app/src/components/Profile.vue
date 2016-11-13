@@ -4,6 +4,8 @@
     <h1>{{user.username}}</h1>
     <p>{{user.name}}</p>
     <p>{{user.email}}</p>
+    <p>{{user.profession}}</p>
+    <button v-touch:tap="logout">Log Out</button>
   </div>
 </template>
 <script>
@@ -17,22 +19,30 @@ export default {
   },
   methods: {
     // --- Check Authentication --- // //TODO: MOVE THIS TO MAIN VIEW (can be seen on all pages)
-    authenticationCheck(){
-      $.ajax({method: "GET", url: "http://localhost:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+    getUserInfo(){
+      $.ajax({method: "GET", url: `http://localhost:3000/api/users/${this.$route.params.username}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           this.isAuthenticated = response.message;
-          if(response.state == "success"){
-            window.location = `/${response.user.username}`;
+          this.user = {
+            "username": response.username,
+            "email": response.email,
+            "name": response.name,
+            "profession": response.profession
           }
-          else{
-            window.location = `/login`;
-          }
+      });
+    },
+    // LOG OUT
+    logout(){
+      $.ajax({method: "GET", url: `http://localhost:3000/api/auth/logout`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+        .done(function(response) {
+          this.isAuthenticated = response.message;
+          window.location = `/`;
       });
     }
   },
   mounted(){
     this.$nextTick(function () {
-      this.authenticationCheck();
+      this.getUserInfo();
     })
   }
 

@@ -64,7 +64,7 @@ export default {
   // --- On page load (mounted) --- //
   mounted(){
     this.$nextTick(function () {
-      this.authenticationCheck(); //redirect if logged in
+      // this.authenticationCheck(); //redirect if logged in
     })
   }
 

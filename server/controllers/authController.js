@@ -36,14 +36,14 @@ exports.registerUser = function(req, res, err){
       User.createUser(newUser, function(err, user){
         // 1100 handles dupe keys
         if ( err && err.code !== 11000 ) {
-          return res.send('Something bad happened. Error, whoops!');
+          return res.send({message: "Whoops! Something didn't work. Please try again"});
         }
         //duplicate key
         else if ( err && err.code === 11000 ) {
-          return res.json({msg: "That username or email aleady exists 1100"});
+          return res.json({message: "That username or email address is already in use"});
         }
         else{
-          return res.json({msg: 'going back to sign in link ' + newUser.username }); //success TODO: // redirect or something
+          return res.json({message: 'Congratulations, ' + newUser.username + " You have successfully signed up!", user: newUser}); //success TODO: // redirect or something
         }
       });
     }
