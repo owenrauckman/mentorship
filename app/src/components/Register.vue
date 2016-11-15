@@ -14,7 +14,7 @@
           <input id="avatar" style="display:none" type="file" @change="onFileChange" value="test">
         </div>
         <div v-else>
-          <img :src="user.avatar" />
+          <img :src="user.avatar" style="max-width: 300px;"/>
           <button class="m__register__form__x" @click="removeImage">X</button>
         </div>
 
