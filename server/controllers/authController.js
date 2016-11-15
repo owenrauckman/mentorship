@@ -13,7 +13,7 @@ exports.registerUser = function(req, res, err){
   }
 
   User.count({username: req.body.username, email: req.body.email}, function(err, user){
-    // Turn Strings To Arrays since Vue won't seem to let me ugh 
+    // Turn Strings To Arrays since Vue won't seem to let me ugh
     var skillsPossessed, skillsDesired;
     if(req.body.skillsPossessed || req.body.skillsDesired){
       skillsPossessed = req.body.skillsPossessed.split(',');
@@ -32,10 +32,11 @@ exports.registerUser = function(req, res, err){
     // Create the user
     else{
       var newUser = new User({
-        username: req.body.username,
+        username: req.body.username.replace(/ /g,''),
         password: req.body.password,
         name: req.body.name,
         email: req.body.email,
+        avatar: req.body.avatar,
         profession: req.body.profession,
         company: req.body.company,
         city: req.body.city,

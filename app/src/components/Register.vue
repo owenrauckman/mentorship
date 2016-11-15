@@ -7,11 +7,74 @@
         <input v-model="user.email" placeholder="Email Address" class="m__register__form__input" type="email"/>
         <input v-model="user.username" placeholder="Username" class="m__register__form__input"/>
         <input v-model="user.password" placeholder="Password" class="m__register__form__input" type="password"/>
+
+        <!-- image upload -->
+        <div v-if="!user.avatar">
+          <label for="avatar" class="m__register__form__button">Upload Profile Picture</label>
+          <input id="avatar" style="display:none" type="file" @change="onFileChange" value="test">
+        </div>
+        <div v-else>
+          <img :src="user.avatar" />
+          <button class="m__register__form__x" @click="removeImage">X</button>
+        </div>
+
         <input v-model="user.profession" placeholder="Profession" class="m__register__form__input"/>
         <input v-model="user.company" placeholder="Company / School" class="m__register__form__input"/>
         <input v-model="user.city" placeholder="City" class="m__register__form__input"/>
-        <input v-model="user.state" placeholder="State" class="m__register__form__input"/>
-        <input v-model="user.zip" placeholder="Zip" class="m__register__form__input"/>
+        <select v-model="user.state" placeholder="State" class="m__register__form__input">
+        	<option value="Alabama">Alabama</option>
+        	<option value="Alaska">Alaska</option>
+        	<option value="Arizona">Arizona</option>
+        	<option value="Arkansas">Arkansas</option>
+        	<option value="California">California</option>
+        	<option value="Colorado">Colorado</option>
+        	<option value="Connecticut">Connecticut</option>
+        	<option value="Delaware">Delaware</option>
+        	<option value="District Of Columbia">District Of Columbia</option>
+        	<option value="Florida">Florida</option>
+        	<option value="Georgie">Georgia</option>
+        	<option value="Hawaii">Hawaii</option>
+        	<option value="Idaho">Idaho</option>
+        	<option value="Illinois">Illinois</option>
+        	<option value="Indiana">Indiana</option>
+        	<option value="Iowa">Iowa</option>
+        	<option value="Kansas">Kansas</option>
+        	<option value="Kentucky">Kentucky</option>
+        	<option value="Lousiana">Louisiana</option>
+        	<option value="Maine">Maine</option>
+        	<option value="Maryland">Maryland</option>
+        	<option value="Massachusetts">Massachusetts</option>
+        	<option value="Michigan">Michigan</option>
+        	<option value="Minnesota">Minnesota</option>
+        	<option value="Mississippi">Mississippi</option>
+        	<option value="Missouri">Missouri</option>
+        	<option value="Montana">Montana</option>
+        	<option value="Nebraska">Nebraska</option>
+        	<option value="Nevada">Nevada</option>
+        	<option value="New Hampshire">New Hampshire</option>
+        	<option value="New Jersey">New Jersey</option>
+        	<option value="New Mexico">New Mexico</option>
+        	<option value="New York">New York</option>
+        	<option value="North Carolina">North Carolina</option>
+        	<option value="North Dakota">North Dakota</option>
+        	<option value="Ohio">Ohio</option>
+        	<option value="Oklahoma">Oklahoma</option>
+        	<option value="Oregon">Oregon</option>
+        	<option value="Pennsylvania">Pennsylvania</option>
+        	<option value="Rhode Island">Rhode Island</option>
+        	<option value="South Carolina">South Carolina</option>
+        	<option value="South Dakota">South Dakota</option>
+        	<option value="Tennessee">Tennessee</option>
+        	<option value="Texas">Texas</option>
+        	<option value="Utah">Utah</option>
+        	<option value="Vermont">Vermont</option>
+        	<option value="Virginia">Virginia</option>
+        	<option value="Washington">Washington</option>
+        	<option value="West Virginia">West Virginia</option>
+        	<option value="Wisconsin">Wisconsin</option>
+        	<option value="Wyoming">Wyoming</option>
+        </select>
+        <input v-model="user.zip" pattern="[0-9]{5}" placeholder="Zip" class="m__register__form__input"/>
         <input v-model="user.statement" placeholder="Bio (140 characters or less)" class="m__register__form__input" maxlength="140" />
         <input v-model="user.skillsPossessed" placeholder="Your Skills (separated by comma)" class="m__register__form__input"/>
         <input v-model="user.skillsDesired" placeholder="Your Goals (separated by comma)" class="m__register__form__input"/>
@@ -34,10 +97,11 @@ export default {
         password: "",
         name: "",
         email: "",
+        avatar: "",
         profession: "",
         company: "",
         city: "",
-        state: "",
+        state: "Kansas",
         zip: "",
         statement: "",
         skillsDesired: "",
@@ -47,6 +111,27 @@ export default {
     }
   },
   methods: {
+    // For The File Upload
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+      this.createImage(files[0]);
+    },
+    createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = (e) => {
+        vm.user.avatar = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImage: function (e) {
+      this.user.avatar = '';
+    },
+    // Register Users
     register(){
       // ensure the necessary fields are filled out
       if(this.user.username && this.user.password && this.user.name && this.user.email){
@@ -129,6 +214,10 @@ ul, ol{
 }
 
 // Styles for Profile / Popup
+input, select {
+    -webkit-appearance: none;
+    border-radius: 0;
+}
 .m{
   &__register{
     &__heading{
@@ -189,6 +278,40 @@ ul, ol{
       flex-direction: column;
       justify-content: center;
       margin: 0 auto;
+      position: relative;
+      &__button{
+        font-family: $lato;
+        text-transform: uppercase;
+        background: transparent;
+        font-size: 1rem;
+        border: solid 1px $medium-gray;
+        color: $medium-gray;
+        display: block;
+        text-align: center;
+        margin: 1rem 0;
+        padding: 1rem 2rem;
+        transition: color 0.3s ease-out, background 0.3s ease-out;
+        &:hover{
+          cursor: pointer;
+          color: $white;
+          background: $medium-gray;
+        }
+      }
+      &__x{
+        font-family: $lato;
+        border: solid 1px $medium-gray;
+        border-radius: 0;
+        background: $white;
+        padding: 1rem;
+        right: 0;
+        position: absolute;
+        color: $medium-gray;
+        &:hover{
+          cursor: pointer;
+          color: $white;
+          background: $medium-gray;
+        }
+      }
       &__input{
         font-family: $lato;
         text-transform: uppercase;
@@ -199,6 +322,14 @@ ul, ol{
         border-bottom: solid 1px $medium-gray;
         margin: 3rem 0;
         padding: 0 0 2rem 2rem;
+        &:focus{
+          &:invalid{
+            border-bottom: solid 1px $medium-gray;
+          }
+        }
+        &:invalid {
+          border-bottom: solid 1px $pink;
+        }
         &:last-child{
           margin-bottom: 1rem;
         }

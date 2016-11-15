@@ -37,7 +37,8 @@
         <svg class="m__search__results__arrow m__search__results__arrow--left" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M58.323 5.553c.287.04.578.076.86.13.58.108 1.144.258 1.697.453 1.102.386 2.148.94 3.09 1.632.625.467.754.612 1.325 1.143L151.3 94.916c.197.214.403.42.594.643.575.663 1.067 1.393 1.48 2.166 1.652 3.13 1.794 6.92.382 10.163-.354.8-.795 1.57-1.318 2.272-.46.63-.612.757-1.14 1.328l-79.6 79.6c-.57.527-.696.68-1.327 1.14-.94.698-1.98 1.25-3.086 1.632-1.38.484-2.85.708-4.307.652-1.168-.045-2.334-.264-3.436-.65-1.1-.385-2.148-.938-3.088-1.632-2.123-1.566-3.68-3.846-4.356-6.394-.305-1.132-.437-2.307-.395-3.476.08-2.047.7-4.06 1.79-5.796.312-.493.66-.963 1.037-1.407.194-.22.4-.427.6-.643l71.312-71.313L48.72 25.485l-.595-.643c-.487-.605-.63-.747-1.043-1.408-.775-1.237-1.32-2.618-1.59-4.06-.215-1.144-.26-2.328-.132-3.49.133-1.156.436-2.3.903-3.37 1.177-2.692 3.366-4.88 6.057-6.058 1.07-.467 2.215-.77 3.372-.903.774-.085.973-.06 1.75-.064.295.024.585.044.88.067z" fill="#A4A7A2" fill-rule="nonzero"/></svg>
         <div class="m__search__results__profile" v-for="user in users" v-touch:swipe="onSwipe">
           <div class="m__search__results__profile__header">
-            <img class="m__search__results__profile__face" src="../assets/face.jpg"/>
+            <img v-if="user.avatar" class="m__search__results__profile__face" :src="user.avatar"/>
+            <img v-else class="m__search__results__profile__face" src="../assets/face.jpg"/>
             <a href="#" class="m__search__results__profile__connect">Connect</a>
           </div>
           <!-- info -->
@@ -47,13 +48,24 @@
             <p class="m__search__results__profile__info__description">{{user.statement}}</p>
           </div>
           <!-- skills -->
-          <div class="m__search__results__profile__skills">
+          <div class="m__search__results__profile__skills" v-if="searchData.mentorType == 'mentor'">
             <div class="m__search__results__profile__skills__type">
-              <span class="m__search__results__profile__skills__type__item m__search__results__profile__skills__type__item--active">Skills</span>
-              <span class="m__search__results__profile__skills__type__item">Goals</span>
+                <span v-touch:tap="toggleSkills" class="m__search__results__profile__skills__type__item m__search__results__profile__skills__type__item--active">Skills</span>
+                <span v-touch:tap="toggleSkills" class="m__search__results__profile__skills__type__item">Goals</span>
             </div>
             <ul class="m__search__results__profile__skills__list">
               <li class="m__search__results__profile__skills__list__item" v-for="item in user.skillsPossessed">
+                {{item}}
+              </li>
+            </ul>
+          </div>
+          <div class="m__search__results__profile__skills" v-else>
+            <div class="m__search__results__profile__skills__type">
+                <span v-touch:tap="toggleSkills" class="m__search__results__profile__skills__type__item">Skills</span>
+                <span v-touch:tap="toggleSkills" class="m__search__results__profile__skills__type__item m__search__results__profile__skills__type__item--active">Goals</span>
+            </div>
+            <ul class="m__search__results__profile__skills__list">
+              <li class="m__search__results__profile__skills__list__item" v-for="item in user.skillsDesired">
                 {{item}}
               </li>
             </ul>
@@ -82,6 +94,7 @@ export default {
     }
   },
   methods: {
+    // Perform Search
     performSearch(e){
       e.preventDefault(); //keep form from submitting
       var that = this;
@@ -163,6 +176,16 @@ export default {
           $('.m__search__results__dots__dot').removeClass('m__search__results__dots__dot--active');
           $('.m__search__results__dots__dot:eq(' + index  + ')').addClass('m__search__results__dots__dot--active');
         }
+      }
+    },
+    // Toggle between skill and goal
+    toggleSkills(e){
+      var text = $(e.target).closest('.m__search__results__profile__skills__type__item').text();
+      if(text == "Goals"){
+        this.searchData.mentorType = "mentee";
+      }
+      else{
+        this.searchData.mentorType = "mentor";
       }
     }
   }
@@ -414,6 +437,11 @@ ul, ol{
               margin: 1rem 1rem 0.5rem 1rem;
               padding-bottom: 1rem;
               font-size: 1rem;
+              transition: color 0.3s ease-out;
+              &:hover{
+                cursor: pointer;
+                color: $dark-gray;
+              }
               &--active{
                 color: $dark-gray;
                 border-bottom: solid 1px $dark-gray;
