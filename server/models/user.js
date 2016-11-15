@@ -42,12 +42,6 @@ var UserSchema = mongoose.Schema({
   },
   skillsDesired: {
     type: Array
-  },
-  mentoring: {
-    type: Array
-  },
-  mentoredBy: {
-    type: Array
   }
 });
 

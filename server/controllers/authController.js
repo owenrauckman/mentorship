@@ -13,8 +13,23 @@ exports.registerUser = function(req, res, err){
   }
 
   User.count({username: req.body.username, email: req.body.email}, function(err, user){
+    // Turn Strings To Arrays since Vue won't seem to let me ugh 
+    var skillsPossessed, skillsDesired;
+    if(req.body.skillsPossessed || req.body.skillsDesired){
+      skillsPossessed = req.body.skillsPossessed.split(',');
+      skillsDesired = req.body.skillsDesired.split(',');
+
+      skillsPossessed.forEach(function(skill, index, arr){
+        arr[index] = skill.trim();
+      });
+      skillsDesired.forEach(function(skill, index, arr){
+        arr[index] = skill.trim();
+      });
+    }
+
     // General Error Handling
     if(err) throw err;
+    // Create the user
     else{
       var newUser = new User({
         username: req.body.username,
@@ -27,10 +42,8 @@ exports.registerUser = function(req, res, err){
         state: req.body.state,
         zip: req.body.zip,
         statement: req.body.statement,
-        skillsPossessed: req.body.skillsPossessed,
-        skillsDesired: req.body.skillsDesired,
-        mentoring: req.body.mentoring,
-        mentoredBy: req.body.mentoredBy
+        skillsPossessed: skillsPossessed,
+        skillsDesired: skillsDesired,
       });
       //takes in the new user and the callback from the model
       User.createUser(newUser, function(err, user){

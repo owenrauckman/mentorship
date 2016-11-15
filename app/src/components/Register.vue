@@ -12,8 +12,9 @@
         <input v-model="user.city" placeholder="City" class="m__register__form__input"/>
         <input v-model="user.state" placeholder="State" class="m__register__form__input"/>
         <input v-model="user.zip" placeholder="Zip" class="m__register__form__input"/>
-        <input v-model="user.statement" placeholder="Statement (140 characters or less)" class="m__register__form__input" maxlength="140" />
-
+        <input v-model="user.statement" placeholder="Bio (140 characters or less)" class="m__register__form__input" maxlength="140" />
+        <input v-model="user.skillsPossessed" placeholder="Your Skills (separated by comma)" class="m__register__form__input"/>
+        <input v-model="user.skillsDesired" placeholder="Your Goals (separated by comma)" class="m__register__form__input"/>
 
         <p class="m__register__error">{{isAuthenticated}}</p>
         <button v-touch:tap="register" class="m__register__form__go">
@@ -39,8 +40,8 @@ export default {
         state: "",
         zip: "",
         statement: "",
-        skillsDesired: [],
-        skillsPossessed: []
+        skillsDesired: "",
+        skillsPossessed: ""
       },
       isAuthenticated: ""
     }
@@ -49,7 +50,6 @@ export default {
     register(){
       // ensure the necessary fields are filled out
       if(this.user.username && this.user.password && this.user.name && this.user.email){
-        var that = this;
         $.ajax({method: "POST", data: this.user, url: "http://localhost:3000/api/auth/register", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
           .done(function(response) {
             if(response.user){
@@ -59,16 +59,10 @@ export default {
             else{
               this.isAuthenticated = response.message;
             }
-        });
+        }.bind(this));
       }
     }
-  },
-  // --- On page load (mounted) --- //
-  mounted(){
-    this.$nextTick(function () {
-    })
   }
-
 }
 </script>
 <style lang="scss">
