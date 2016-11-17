@@ -80,58 +80,69 @@ exports.getUser = function(req, res){
 
 // --- Edit User --- //
 exports.editUser = function(req, res, next){
-  User.findOne({username: req.params.username}, function (err, user) {
-    // Turn Strings To Arrays since Vue won't seem to let me ugh
-    // --- BTW this is a DUPE of what is in AUTH controller
-    var skillsPossessed, skillsDesired;
-    if(req.body.skillsPossessed || req.body.skillsDesired){
-      skillsPossessed = req.body.skillsPossessed.split(',');
-      skillsDesired = req.body.skillsDesired.split(',');
+  if(req.user.username == req.params.username){
+    User.findOne({username: req.params.username}, function (err, user) {
+      // Turn Strings To Arrays since Vue won't seem to let me ugh
+      // --- BTW this is a DUPE of what is in AUTH controller
+      var skillsPossessed, skillsDesired;
+      if(req.body.skillsPossessed || req.body.skillsDesired){
+        skillsPossessed = req.body.skillsPossessed.split(',');
+        skillsDesired = req.body.skillsDesired.split(',');
 
-      skillsPossessed.forEach(function(skill, index, arr){
-        arr[index] = skill.trim();
-      });
-      skillsDesired.forEach(function(skill, index, arr){
-        arr[index] = skill.trim();
-      });
-    }
-    // user.username = req.body.username.replace(/ /g,'');
-    // user.password = req.body.password;
-    user.name = req.body.name;
-    user.email = req.body.email;
-    user.avatar = req.body.avatar;
-    user.profession = req.body.profession;
-    user.company = req.body.company;
-    user.city = req.body.city;
-    user.state = req.body.state;
-    user.zip = req.body.zip;
-    user.statement = req.body.statement;
-    user.skillsPossessed = skillsPossessed;
-    user.skillsDesired = skillsDesired;
+        skillsPossessed.forEach(function(skill, index, arr){
+          arr[index] = skill.trim();
+        });
+        skillsDesired.forEach(function(skill, index, arr){
+          arr[index] = skill.trim();
+        });
+      }
+      // user.username = req.body.username.replace(/ /g,'');
+      // user.password = req.body.password;
+      user.name = req.body.name;
+      user.email = req.body.email;
+      user.avatar = req.body.avatar;
+      user.profession = req.body.profession;
+      user.company = req.body.company;
+      user.city = req.body.city;
+      user.state = req.body.state;
+      user.zip = req.body.zip;
+      user.statement = req.body.statement;
+      user.skillsPossessed = skillsPossessed;
+      user.skillsDesired = skillsDesired;
 
-    user.save(function (err) {
-      if(err) {
-          return res.json({message: 'There was an error updating your profile. Please try again'});
-      }
-      else{
-        return res.json({message: 'Profile Updated Successfully'});
-      }
+      user.save(function (err) {
+        if(err) {
+            return res.json({message: 'There was an error updating your profile. Please try again'});
+        }
+        else{
+          return res.json({message: 'Profile Updated Successfully'});
+        }
+      });
     });
-  });
+  }
+  else{
+    return res.json({message: "You can't edit that user!"});
+  }
 
 };
 
 // --- Delete User --- //
 exports.deleteUser = function(req,res){
-  User.findOne({username: req.params.username}, function (err, user) {
-    user.remove({
-      username: req.params.username
-    },
-    function(err,user){
-      if(err){
-        return res.status(500).json({err: err.message});
-      }
-      res.json({message: 'User has been deleted'});
+  // make sure the delete route is the logged in user
+  if(req.user.username == req.params.username){
+    User.findOne({username: req.params.username}, function (err, user) {
+      user.remove({
+        username: req.params.username
+      },
+      function(err,user){
+        if(err){
+          return res.status(500).json({err: err.message});
+        }
+        return res.json({message: 'User has been deleted'});
+      });
     });
-  });
+  }
+  else{
+    return res.json({message: "You can't delete that user!"});
+  }
 };
