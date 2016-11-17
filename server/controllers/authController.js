@@ -13,24 +13,23 @@ exports.registerUser = function(req, res, err){
   }
 
   User.count({username: req.body.username, email: req.body.email}, function(err, user){
-    // Turn Strings To Arrays since Vue won't seem to let me ugh
-    var skillsPossessed, skillsDesired;
-    if(req.body.skillsPossessed || req.body.skillsDesired){
-      skillsPossessed = req.body.skillsPossessed.split(',');
-      skillsDesired = req.body.skillsDesired.split(',');
-
-      skillsPossessed.forEach(function(skill, index, arr){
-        arr[index] = skill.trim();
-      });
-      skillsDesired.forEach(function(skill, index, arr){
-        arr[index] = skill.trim();
-      });
-    }
-
     // General Error Handling
     if(err) throw err;
     // Create the user
     else{
+      // Turn Strings To Arrays since Vue won't seem to let me ugh
+      var skillsPossessed, skillsDesired;
+      if(req.body.skillsPossessed || req.body.skillsDesired){
+        skillsPossessed = req.body.skillsPossessed.split(',');
+        skillsDesired = req.body.skillsDesired.split(',');
+
+        skillsPossessed.forEach(function(skill, index, arr){
+          arr[index] = skill.trim();
+        });
+        skillsDesired.forEach(function(skill, index, arr){
+          arr[index] = skill.trim();
+        });
+      }
       var newUser = new User({
         username: req.body.username.replace(/ /g,''),
         password: req.body.password,
@@ -48,19 +47,22 @@ exports.registerUser = function(req, res, err){
       });
       //takes in the new user and the callback from the model
       User.createUser(newUser, function(err, user){
-        // Check if username or email already exists
-        User.count({ $or: [{"username": newUser.username}, {"email": newUser.email} ] }), function(err, users){
-          if(err){
-            return res.status(500).json({message: err.message});
+        // Check if username or email already exists (only usename here...cause email ist )
+        User.count({username: newUser.username}, function(err, count){
+          if(count > 0){
+            err = "nah";
           }
-          return res.json({message: "That username or email address is already in use."});
-        }
-        // 1100 handles dupe keys
+        });
+
+        //1100 handles dupe keys
         if ( err && err.code !== 11000 ) {
-          return res.send({message: "Whoops! Something didn't work. Please try again"});
+          return res.json({message: "Whoops! Something didn't work. Please try again"});
         }
         //duplicate key
         else if ( err && err.code === 11000 ) {
+          return res.json({message: "That username or email address is already in use"});
+        }
+        else if (err == "nah"){
           return res.json({message: "That username or email address is already in use"});
         }
         else{
