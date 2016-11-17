@@ -365,7 +365,7 @@ input, select {
         &--delete{
           font-size: 0.75rem;
           color: lighten($medium-gray, 10%);
-          border: solid 1px lighten($medium-gray, 10%);
+          border: solid 1px transparent;
           padding: 1rem 0.5rem;
           &:hover{
             background: $pink;
