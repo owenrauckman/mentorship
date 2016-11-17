@@ -80,9 +80,6 @@ exports.getUser = function(req, res){
 
 // --- Edit User --- //
 exports.editUser = function(req, res, next){
-
-
-
   User.findOne({username: req.params.username}, function (err, user) {
     // Turn Strings To Arrays since Vue won't seem to let me ugh
     // --- BTW this is a DUPE of what is in AUTH controller
@@ -119,39 +116,22 @@ exports.editUser = function(req, res, next){
       else{
         return res.json({message: 'Profile Updated Successfully'});
       }
+    });
   });
 
-
-
-  });
-
-  // User.findOneAndUpdate({username: req.params.username}, {$set:{name:req.body.name}}, {new: true}, function(err, doc){
-  //   if(err){console.log('something went wrong');}
-  //   console.log(doc);
-  // });
-
-
-  // //new true FORCES mongoose to return the new updated data instead
-  // User.findByIdAndUpdate(id, user, {new:true}, function(err, user){
-  //   //TODO: go through the same Validation that you do on signup
-  //   if(err){
-  //     return res.status(500).json({message: err.message});
-  //   }
-  //   // console.log('id is: ' + id);
-  //   // console.log('user is: ' + user);
-  //   res.json({'user': user, message: 'user updated!'});
-  // });
 };
 
 // --- Delete User --- //
 exports.deleteUser = function(req,res){
-  User.remove({
-    _id: req.params.id
-  },
-  function(err,user){
-    if(err){
-      return res.status(500).json({err: err.message});
-    }
-    res.json({message: 'User has been deleted'});
+  User.findOne({username: req.params.username}, function (err, user) {
+    user.remove({
+      username: req.params.username
+    },
+    function(err,user){
+      if(err){
+        return res.status(500).json({err: err.message});
+      }
+      res.json({message: 'User has been deleted'});
+    });
   });
 };

@@ -79,6 +79,7 @@
         <input v-model="user.statement" placeholder="Bio (140 characters or less)" class="m__profile__form__input" maxlength="140" />
         <input v-model="user.skillsPossessed" placeholder="Skills (separated by comma)" class="m__profile__form__input"/>
         <input v-model="user.skillsDesired" placeholder="Goals (separated by comma)" class="m__profile__form__input"/>
+        <button class="m__profile__form__button m__profile__form__button--delete" v-touch:tap="deleteUser">Delete Profile</button>
 
         <p class="m__profile__error">{{isAuthenticated}}</p>
         <button v-touch:tap="update" class="m__profile__form__go">
@@ -152,6 +153,15 @@ export default {
       $.ajax({method: "GET", url: `http://localhost:3000/api/auth/logout`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           if(response.message = 'logged out'){
+            window.location = `/`;
+          }
+      }.bind(this));
+    },
+    deleteUser(){
+      // ensure the necessary fields are filled out
+      $.ajax({method: "DELETE", url: `http://localhost:3000/api/delete/${this.user.username}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+        .done(function(response) {
+          if(response.message = 'User has been deleted'){
             window.location = `/`;
           }
       }.bind(this));
@@ -351,6 +361,17 @@ input, select {
           cursor: pointer;
           color: $white;
           background: $medium-gray;
+        }
+        &--delete{
+          font-size: 0.75rem;
+          color: lighten($medium-gray, 10%);
+          border: solid 1px lighten($medium-gray, 10%);
+          padding: 1rem 0.5rem;
+          &:hover{
+            background: $pink;
+            color: $white;
+            border: solid 1px transparent;
+          }
         }
       }
       &__x{

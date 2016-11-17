@@ -71,8 +71,8 @@ router.route('/users/skillsDesired/:skill')
 // Edit User
 router.route('/edit/:username')
   .put(userController.editUser);
-router.route('/delete/:id')
-  .delete(userController.deleteUser);
+router.route('/delete/:username')
+  .delete(passportController.ensureAuthenticated, userController.deleteUser);
 
 // --- Authentication Routes --- //
 router.route('/auth/register')
