@@ -16,7 +16,7 @@ var db = mongoose.connection;
 var app = express();
 
 // --- Cors allows for Auth to work across different ports --- //
-app.use(cors());
+app.use(cors({origin: 'http://localhost:8080', credentials: true}));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:8080");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -60,8 +60,6 @@ router.route('/chat/new/:recipient')
   .post(passportController.ensureAuthenticated, chatController.newConversation);
 
 // --- API Routes --- //
-// router.route('/users') // probably don't need this since it will be stressful on the db
-//   .get(passportController.ensureAuthenticated, userController.getUsers);
 router.route('/users/:username')
   .get(userController.getUser);
 // By skills wanted / desired skillsPossessed/:skill?/:locationz
@@ -71,7 +69,7 @@ router.route('/users/skillsDesired/:skill')
   .get(userController.getUsersBySkillsDesired);
 
 // Edit User
-router.route('/edit/:id')
+router.route('/edit/:username')
   .put(userController.editUser);
 router.route('/delete/:id')
   .delete(userController.deleteUser);

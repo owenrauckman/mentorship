@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <!-- TODO: add nav and stuff here -->
-    <!-- maybe move this idk -->
     <router-view></router-view>
     <Navigation></Navigation>
   </div>

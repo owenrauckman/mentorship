@@ -36,7 +36,7 @@ export default {
           .done(function(response) {
             if(response.user){
               this.isAuthenticated = response.message;
-              window.location = `/${response.user.username}`; //send them to their profile (will need to add auth to this route)
+              window.location = `/profile`; //send them to their profile (will need to add auth to this route)
             }
             else{
               this.isAuthenticated = response.message;
@@ -56,7 +56,7 @@ export default {
         .done(function(response) {
           this.isAuthenticated = response.message;
           if(response.state == "success"){
-            window.location = `/${response.user.username}`;
+            window.location = `/profile`;
           }
       });
     }

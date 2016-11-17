@@ -76,8 +76,8 @@
         </select>
         <input v-model="user.zip" pattern="[0-9]{5}" placeholder="Zip" class="m__register__form__input"/>
         <input v-model="user.statement" placeholder="Bio (140 characters or less)" class="m__register__form__input" maxlength="140" />
-        <input v-model="user.skillsPossessed" placeholder="Your Skills (separated by comma)" class="m__register__form__input"/>
-        <input v-model="user.skillsDesired" placeholder="Your Goals (separated by comma)" class="m__register__form__input"/>
+        <input v-model="user.skillsPossessed" placeholder="Skills (separated by comma)" class="m__register__form__input"/>
+        <input v-model="user.skillsDesired" placeholder="Goals (separated by comma)" class="m__register__form__input"/>
 
         <p class="m__register__error">{{isAuthenticated}}</p>
         <button v-touch:tap="register" class="m__register__form__go">

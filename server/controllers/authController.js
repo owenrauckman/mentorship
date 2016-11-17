@@ -43,7 +43,7 @@ exports.registerUser = function(req, res, err){
         zip: req.body.zip,
         statement: req.body.statement,
         skillsPossessed: skillsPossessed,
-        skillsDesired: skillsDesired,
+        skillsDesired: skillsDesired
       });
       //takes in the new user and the callback from the model
       User.createUser(newUser, function(err, user){
