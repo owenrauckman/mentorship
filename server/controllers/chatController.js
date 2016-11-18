@@ -12,8 +12,10 @@ exports.getConversations = function(req, res, next){
         res.send({error: err});
         return next(err);
       }
+      console.log('------');
+      console.log(conversations);
       if(!conversations || conversations.length == 0){
-        return res.send({"msg": "This user does not have any conversations"});
+        return res.json({"message": "This user does not have any conversations"});
       }
 
       // Set up empty array to hold conversations + most recent message
@@ -24,7 +26,7 @@ exports.getConversations = function(req, res, next){
           .limit(1)
           .populate({
             path: "author",
-            select: "profile.firstName profile.lastName" // todo update this per user schema
+            select: "name" // todo update this per user schema
           })
           .exec(function(err, message){
             if(err){
@@ -62,6 +64,7 @@ exports.getConversation = function(req, res, next){
 //TODO: // all of these routes needing a user will have to be authenticated (with passport at beginning)
 // POST start a new conversation
 exports.newConversation = function(req, res, next){
+  // make sure the params are there
   if(!req.params.recipient){
     res.status(422).send({error: 'Please choose a valid recipient for your message'});
     return next();
@@ -70,29 +73,39 @@ exports.newConversation = function(req, res, next){
     res.status(422).send({error: 'Please enter a message'});
     return next();
   }
-  var conversation = new Conversation({
-    participants: [req.user.id, req.params.recipient]
-  });
-
-  conversation.save(function(err, newConversation){
+  // we have to perform a find to convert the username to an ID for the chat controllers
+  User.findOne({username: req.params.recipient}, function (err, user) {
+    console.log('---- ----- ');
+    console.log(user);
     if(err){
-      res.send({error: err});
-      return next(err);
+      return res.status(500).json({message: err.message});
     }
-    var message = new Message({
-      conversationId: newConversation._id,
-      body: req.body.composedMessage,
-      author: req.user._id
+    var conversation = new Conversation({
+      participants: [req.user.id, user.id]
     });
 
-    message.save(function(err, newMessage){
+    conversation.save(function(err, newConversation){
       if(err){
         res.send({error: err});
         return next(err);
       }
-      res.status(200).json({message: 'Conversation started!',conversationId: conversation._id});
-      return next();
+      var message = new Message({
+        conversationId: newConversation._id,
+        body: req.body.composedMessage,
+        author: user._id,
+        name: req.params.recipient
+      });
+
+      message.save(function(err, newMessage){
+        if(err){
+          res.send({error: err});
+          return next(err);
+        }
+        res.status(200).json({message: 'Conversation started!',conversationId: conversation._id});
+        return next();
+      });
     });
+
   });
 }
 

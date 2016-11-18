@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var MessageSchema = new Schema({  
+var MessageSchema = new Schema({
   conversationId: {
     type: Schema.Types.ObjectId,
     required: true
@@ -13,6 +13,9 @@ var MessageSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User'
+  },
+  name: {
+    type: String
   }
 },
 {

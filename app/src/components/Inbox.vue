@@ -4,24 +4,16 @@
       <div class="m__inbox__container">
         <ul class="m__inbox__list">
 
-          <li class="m__inbox__list__item">
-            <div class="m__inbox__list__item--dot">
-              <span class="m__inbox__list__item--dot--circle"></span>
-            </div>
-            <div class="m__inbox__list__item--info">
-              <h2 class="m__inbox__list__item__name">Ron Namingly</h2>
-              <p class="m__inbox__list__item__copy">This is a part of a message. Add a limit...</p>
-            </div>
-          </li>
-
-          <li class="m__inbox__list__item">
-            <div class="m__inbox__list__item--dot">
-              <span class="m__inbox__list__item--dot--circle m__inbox__list__item--dot--circle--unread"></span>
-            </div>
-            <div class="m__inbox__list__item--info">
-              <h2 class="m__inbox__list__item__name">Ron Namingly</h2>
-              <p class="m__inbox__list__item__copy">This is a part of a message. Add a limit...</p>
-            </div>
+          <li class="m__inbox__list__item"  v-for="(conversation, index) in conversations">
+            <span class="m__inbox__list__item__container" v-for="c in conversation">
+              <div class="m__inbox__list__item--dot">
+                <span class="m__inbox__list__item--dot--circle"></span>
+              </div>
+              <div class="m__inbox__list__item--info">
+                <h2 class="m__inbox__list__item__name">{{c.name}}</h2>
+                <p class="m__inbox__list__item__copy">{{c.body}}</p>
+              </div>
+            </span>
           </li>
 
         </ul>
@@ -35,7 +27,25 @@ export default {
   name: 'inbox',
   data () {
     return {
+      conversations: ""
     }
+  },
+  methods: {
+
+  },
+  mounted(){
+    this.$nextTick(function () {
+      $.ajax({method: "GET", url: "http://localhost:3000/api/chat/", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+        .done(function(response) {
+          // console.log(response.conversations);
+          $.each(response.conversations, function(index, val){
+            $.each(val, function(index2, val2){
+              // console.log(val2);
+            });
+          });
+          this.conversations = response.conversations;
+      }.bind(this));
+    });
   }
 }
 </script>
@@ -126,6 +136,9 @@ ul, ol{
       width: 100%;
       font-family: $lato;
       &__item{
+        &__container{
+          display: flex;
+        }
         list-style: none;
         display: flex;
         width: 100%;
