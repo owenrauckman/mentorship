@@ -11,6 +11,7 @@
 import Landing from './components/Landing'
 import Search from './components/Search'
 import Profile from './components/Profile'
+import Inbox from './components/Inbox'
 import Login from './components/Login'
 import Navigation from './components/Navigation'
 import Register from './components/Register'
@@ -21,6 +22,7 @@ export default {
     Search,
     Landing,
     Profile,
+    Inbox,
     Login,
     Register,
     Navigation

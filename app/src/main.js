@@ -11,6 +11,7 @@ import App from './App'
 import Landing from './components/Landing'
 import Search from './components/Search'
 import Profile from './components/Profile'
+import Inbox from './components/Inbox'
 import Login from './components/Login'
 import Navigation from './components/Navigation'
 import Register from './components/Register'
@@ -28,6 +29,7 @@ const router = new VueRouter({
     {path: '/', component: Landing},
     {path: '/search', component: Search},
     {path: '/login', component: Login},
+    {path: '/inbox', component: Inbox},
     {path: '/register', component: Register},
     {path: '/profile', component: Profile}
   ]
