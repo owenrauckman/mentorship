@@ -79,57 +79,38 @@ exports.newConversation = function(req, res, next){
 
     // check to see if conversation already exists
     Conversation.findOne( {$and: [{participants: req.user.id}, {participants: user.id}] }, function(err, convo, next){
+      var conversatonToUse;
       if(convo){
-        convo.save(function(err, newConversation){
-          if(err){
-            res.send({error: err});
-            return next(err);
-          }
-          var message = new Message({
-            conversationId: newConversation._id,
-            body: req.body.composedMessage,
-            author: user._id,
-            from: req.user.username,
-            to: user.username
-          });
-
-          message.save(function(err, newMessage){
-            if(err){
-              res.send({error: err});
-              return next(err);
-            }
-            return res.json({message: 'Conversation continued!',conversationId: newConversation._id});
-          });
-        });
+        conversationToUse = convo;
       }
-      // Otherwise, create a new conversation
       else{
-        var conversation = new Conversation({
+        conversationToUse = new Conversation({
           participants: [req.user.id, user.id]
         });
+      }
+      // Populate the conversation
+      conversationToUse.save(function(err, newConversation){
+        if(err){
+          res.send({error: err});
+          return next(err);
+        }
+        var message = new Message({
+          conversationId: newConversation._id,
+          body: req.body.composedMessage,
+          author: user._id,
+          from: req.user.username,
+          to: user.username
+        });
 
-        conversation.save(function(err, newConversation){
+        message.save(function(err, newMessage){
           if(err){
             res.send({error: err});
             return next(err);
           }
-          var message = new Message({
-            conversationId: newConversation._id,
-            body: req.body.composedMessage,
-            author: user._id,
-            from: req.user.username,
-            to: user.username
-          });
-
-          message.save(function(err, newMessage){
-            if(err){
-              res.send({error: err});
-              return next(err);
-            }
-            return res.json({message: 'Conversation started!',conversationId: newConversation._id});
-          });
+          return res.json({message: 'Message sent!',conversationId: newConversation._id});
         });
-      }
+      });
+
     });
   });
 }
