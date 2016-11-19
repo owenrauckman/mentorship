@@ -12,8 +12,6 @@ exports.getConversations = function(req, res, next){
         res.send({error: err});
         return next(err);
       }
-      console.log('------');
-      console.log(conversations);
       if(!conversations || conversations.length == 0){
         return res.json({"message": "This user does not have any conversations"});
       }
@@ -75,37 +73,64 @@ exports.newConversation = function(req, res, next){
   }
   // we have to perform a find to convert the username to an ID for the chat controllers
   User.findOne({username: req.params.recipient}, function (err, user) {
-    console.log('---- ----- ');
-    console.log(user);
     if(err){
       return res.status(500).json({message: err.message});
     }
-    var conversation = new Conversation({
-      participants: [req.user.id, user.id]
-    });
 
-    conversation.save(function(err, newConversation){
-      if(err){
-        res.send({error: err});
-        return next(err);
+    // check to see if conversation already exists
+    Conversation.findOne( {$and: [{participants: req.user.id}, {participants: user.id}] }, function(err, convo, next){
+      if(convo){
+        convo.save(function(err, newConversation){
+          if(err){
+            res.send({error: err});
+            return next(err);
+          }
+          var message = new Message({
+            conversationId: newConversation._id,
+            body: req.body.composedMessage,
+            author: user._id,
+            from: req.user.username,
+            to: user.username
+          });
+
+          message.save(function(err, newMessage){
+            if(err){
+              res.send({error: err});
+              return next(err);
+            }
+            return res.json({message: 'Conversation continued!',conversationId: newConversation._id});
+          });
+        });
       }
-      var message = new Message({
-        conversationId: newConversation._id,
-        body: req.body.composedMessage,
-        author: user._id,
-        name: req.params.recipient
-      });
+      // Otherwise, create a new conversation
+      else{
+        var conversation = new Conversation({
+          participants: [req.user.id, user.id]
+        });
 
-      message.save(function(err, newMessage){
-        if(err){
-          res.send({error: err});
-          return next(err);
-        }
-        res.status(200).json({message: 'Conversation started!',conversationId: conversation._id});
-        return next();
-      });
+        conversation.save(function(err, newConversation){
+          if(err){
+            res.send({error: err});
+            return next(err);
+          }
+          var message = new Message({
+            conversationId: newConversation._id,
+            body: req.body.composedMessage,
+            author: user._id,
+            from: req.user.username,
+            to: user.username
+          });
+
+          message.save(function(err, newMessage){
+            if(err){
+              res.send({error: err});
+              return next(err);
+            }
+            return res.json({message: 'Conversation started!',conversationId: newConversation._id});
+          });
+        });
+      }
     });
-
   });
 }
 

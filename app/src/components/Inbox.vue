@@ -5,13 +5,14 @@
         <ul class="m__inbox__list">
 
           <li class="m__inbox__list__item"  v-for="(conversation, index) in conversations">
-            <span class="m__inbox__list__item__container" v-for="c in conversation">
+            <span class="m__inbox__list__item__container" v-for="message in conversation">
               <div class="m__inbox__list__item--dot">
                 <span class="m__inbox__list__item--dot--circle"></span>
               </div>
               <div class="m__inbox__list__item--info">
-                <h2 class="m__inbox__list__item__name">{{c.name}}</h2>
-                <p class="m__inbox__list__item__copy">{{c.body}}</p>
+                <h2 v-if="message.from == loggedInUser" class="m__inbox__list__item__name">{{message.to}}</h2>
+                <h2 v-else class="m__inbox__list__item__name">{{message.from}}</h2>
+                <p class="m__inbox__list__item__copy">{{message.body}}</p>
               </div>
             </span>
           </li>
@@ -27,7 +28,8 @@ export default {
   name: 'inbox',
   data () {
     return {
-      conversations: ""
+      conversations: "",
+      loggedInUser: ""
     }
   },
   methods: {
@@ -35,16 +37,20 @@ export default {
   },
   mounted(){
     this.$nextTick(function () {
-      $.ajax({method: "GET", url: "http://localhost:3000/api/chat/", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      // check if is logged in
+      $.ajax({method: "GET", url: "http://localhost:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
-          // console.log(response.conversations);
-          $.each(response.conversations, function(index, val){
-            $.each(val, function(index2, val2){
-              // console.log(val2);
-            });
-          });
-          this.conversations = response.conversations;
+          this.loggedInUser = response.user.username;
+
+          // Populate the inbox
+          $.ajax({method: "GET", url: "http://localhost:3000/api/chat/", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+            .done(function(response) {
+              this.conversations = response.conversations;
+
+          }.bind(this));
+
       }.bind(this));
+
     });
   }
 }
