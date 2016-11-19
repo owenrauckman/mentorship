@@ -19,6 +19,9 @@ var MessageSchema = new Schema({
   },
   to: {
     type: String
+  },
+  unread: {
+    type: Boolean
   }
 },
 {

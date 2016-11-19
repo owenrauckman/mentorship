@@ -45,7 +45,7 @@ exports.getConversations = function(req, res, next){
 exports.getConversation = function(req, res, next){
   Message.find({conversationId: req.params.conversationId})
     .select('createdAt body author')
-    .sort('-createdAt')
+    .sort('createdAt')
     .populate({
       path: 'author',
       select: 'name'
@@ -99,7 +99,8 @@ exports.newConversation = function(req, res, next){
           body: req.body.composedMessage,
           author: user._id,
           from: req.user.username,
-          to: user.username
+          to: user.username,
+          unread: true
         });
 
         message.save(function(err, newMessage){
@@ -115,22 +116,22 @@ exports.newConversation = function(req, res, next){
   });
 }
 
-// POST send reply
-exports.sendReply = function(req, res, next){
-  var reply = new Message({
-    conversationId: req.params.conversationId,
-    body: req.body.composedMessage,
-    author: req.user._id
-  });
-
-  reply.save(function(err, sentReply){
-    if(err){
-      res.send({error: err});
-      return next(err);
-    }
-    res.status(200).json({message: 'Reply successfully sent!'});
-    return(next);
-  });
-}
+// POST send reply (Probably not needed for now since we refactore the function above)
+// exports.sendReply = function(req, res, next){
+//   var reply = new Message({
+//     conversationId: req.params.conversationId,
+//     body: req.body.composedMessage,
+//     author: req.user._id
+//   });
+//
+//   reply.save(function(err, sentReply){
+//     if(err){
+//       res.send({error: err});
+//       return next(err);
+//     }
+//     res.status(200).json({message: 'Reply successfully sent!'});
+//     return(next);
+//   });
+// }
 
 //TODO: // if you want, add DELTE/PUT routes http://blog.slatepeak.com/creating-a-real-time-chat-api-with-node-express-socket-io-and-mongodb/

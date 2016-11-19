@@ -55,7 +55,7 @@ router.route('/chat/')
   .get(passportController.ensureAuthenticated, chatController.getConversations);
 router.route('/chat/:conversationId')
   .get(passportController.ensureAuthenticated, chatController.getConversation)
-  .post(passportController.ensureAuthenticated, chatController.sendReply);
+  // .post(passportController.ensureAuthenticated, chatController.sendReply); // probably not needed for now since we refactored new conversation
 router.route('/chat/new/:recipient')
   .post(passportController.ensureAuthenticated, chatController.newConversation);
 
