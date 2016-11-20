@@ -1,5 +1,6 @@
 // --- Dependencies --- //
 var express = require('express');
+var http = require('http');
 var app = express();
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
@@ -12,8 +13,26 @@ mongoose.connect('mongodb://owenrauckman:jayhawks@ds023398.mlab.com:23398/auth-t
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 
-// --- Init App --- //
-var app = express();
+// --- Init App (and socket IO)--- //
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+
+// probably remove this
+// io.on('connection', function(socket){
+//   console.log('a user connected');
+//   socket.on('disconnect', function(){
+//     console.log('user disconnected');
+//   });
+// });
+
+// sockets for chat application
+// io.on('connection', function(socket){
+//   socket.on('chat message', function(msg){
+//     console.log('message: ' + msg);
+//     io.emit('chat message', msg);
+//   });
+// });
+
 
 // --- Cors allows for Auth to work across different ports --- //
 app.use(cors({origin: 'http://localhost:8080', credentials: true}));
@@ -55,7 +74,7 @@ router.route('/chat/')
   .get(passportController.ensureAuthenticated, chatController.getConversations);
 router.route('/chat/:conversationId')
   .get(passportController.ensureAuthenticated, chatController.getConversation)
-  // .post(passportController.ensureAuthenticated, chatController.sendReply); // probably not needed for now since we refactored new conversation
+  // .post(passportController.ensureAuthenticated, chatController.sendReply); // probably not needed for now since we refactored
 router.route('/chat/new/:recipient')
   .post(passportController.ensureAuthenticated, chatController.newConversation);
 
@@ -89,6 +108,6 @@ app.use('/api/', router);
 
 // --- Start Server --- //
 app.set('port', (process.env.PORT || 3000));
-app.listen(app.get('port'), function(){
+server.listen(app.get('port'), function(){
   console.log('server startd on port: ' + app.get('port'));
 });

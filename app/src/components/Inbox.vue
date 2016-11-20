@@ -55,11 +55,13 @@
       </div>
 
     </div>
-
   </div>
 </template>
 
+
 <script>
+var socket = io.connect('http://localhost:3000');
+
 export default {
   name: 'inbox',
   data () {
@@ -70,13 +72,14 @@ export default {
       loggedInUserId: "",
       messageWith: "",
       conversationId: "",
-      inputMessage: ""
+      inputMessage: "",
+      test: ""
     }
   },
   methods: {
     showChat(e){
-      this.messageWith = $(e.target).parents().find('.m__inbox__list__item__name').text();
-      this.conversationId = $(e.target).parents().find('.m__conversationId').text()
+      this.messageWith = $(e.target).parent().find('.m__inbox__list__item__name').text();
+      this.conversationId = $(e.target).parent().find('.m__conversationId').text()
 
       $.ajax({method: "GET", url: `http://localhost:3000/api/chat/${this.conversationId}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
@@ -85,15 +88,24 @@ export default {
           $.each(this.chat, function(index, message){
             message.createdAt = new Date(message.createdAt); // turn the UTC string to an actual date
           });
+
       }.bind(this));
+
     },
     hideChat(){
       $('.m__chat').animate({'right': '-100%'}, 250);
     },
     sendChat(){
+      // socket.emit('chat message', 'test');
+      // socket.on('chat message', function(msg){
+      //   $('.m__chat__messages').append('<div class="m__chat__messages__message"><div class="m__chat__messages__message__text">' + msg + '</div></div>');
+      // });
+
       $.ajax({method: "POST", data: {composedMessage: this.inputMessage}, url: `http://localhost:3000/api/chat/new/${this.messageWith}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
+          $('.m__chat__input__text').val('');
           // $('.m__chat__messages').scrollTop(1000);
+          // socket.emit('chat message', 'test');
       }.bind(this));
     }
   },
@@ -102,14 +114,18 @@ export default {
       // check if is logged in
       $.ajax({method: "GET", url: "http://localhost:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
+          if(response.user == null){
+            window.location = `/login`;
+          }
+
           this.loggedInUser = response.user.username;
           this.loggedInUserId = response.user._id;
+
 
           // Populate the inbox
           $.ajax({method: "GET", url: "http://localhost:3000/api/chat/", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
             .done(function(response) {
               this.conversations = response.conversations;
-              console.log(JSON.parse(JSON.stringify(this.conversations)));
 
           }.bind(this));
 
@@ -120,6 +136,7 @@ export default {
     });
   }
 }
+
 </script>
 <style lang="scss">
 //TODO: // remove these....they need to go somewhere global
@@ -149,6 +166,7 @@ $lato: 'Lato', sans-serif;
 
 html, body{
   height: 100%;
+  overflow-x: hidden;
 }
 body{
   margin: 0 auto;
@@ -213,6 +231,9 @@ ul, ol{
       &__item{
         &__container{
           display: flex;
+          &:hover{
+            cursor: pointer;
+          }
         }
         list-style: none;
         display: flex;
@@ -282,6 +303,9 @@ ul, ol{
         outline: none;
         background: none;
         border: none;
+        &:hover{
+          cursor: pointer;
+        }
         svg{
           height: 25px;
           width: 25px;
@@ -362,6 +386,9 @@ ul, ol{
         display: flex;
         justify-content: center;
         align-items: center;
+        &:hover{
+          cursor: pointer;
+        }
         svg{
           height: 30px;
           width: 30px;

@@ -45,7 +45,8 @@ exports.getConversations = function(req, res, next){
 exports.getConversation = function(req, res, next){
   Message.find({conversationId: req.params.conversationId})
     .select('createdAt body author')
-    .sort('createdAt')
+    .sort('-createdAt')
+    .limit(20)
     .populate({
       path: 'author',
       select: 'name'
@@ -55,7 +56,7 @@ exports.getConversation = function(req, res, next){
         res.send({error: err});
         return next(err);
       }
-      res.status(200).json({conversation: messages});
+      res.status(200).json({conversation: messages.reverse()});
     })
 }
 

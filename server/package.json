@@ -19,6 +19,7 @@
     "mongoose": "latest",
     "mongoose-hidden": "^0.6.4",
     "passport": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "socket.io": "^1.5.1"
   }
 }

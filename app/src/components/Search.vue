@@ -39,13 +39,14 @@
           <div class="m__search__results__profile__header">
             <img v-if="user.avatar" class="m__search__results__profile__face" :src="user.avatar"/>
             <img v-else class="m__search__results__profile__face" src="../assets/face.jpg"/>
-            <a href="#" class="m__search__results__profile__connect">Connect</a>
+            <a href="" v-touch:tap="sendChat" class="m__search__results__profile__connect">Connect</a>
           </div>
           <!-- info -->
           <div class="m__search__results__profile__info">
             <h1 class="m__search__results__profile__info__name">{{user.name}}</h1>
             <h2 class="m__search__results__profile__info__job">{{user.profession}}</h2>
             <p class="m__search__results__profile__info__description">{{user.statement}}</p>
+            <p class="m__search__results__username" style="display:none">{{user.username}}</p>
           </div>
           <!-- skills -->
           <div class="m__search__results__profile__skills" v-if="searchData.mentorType == 'mentor'">
@@ -90,10 +91,20 @@ export default {
       },
       //at a minimum, this schema needs the fields for searching
       users: [],
-      noResults: ""
+      noResults: "",
+      messageWith: ""
     }
   },
   methods: {
+    sendChat(e){
+      e.preventDefault();
+      this.messageWith = $(e.target).parents().find('.m__search__results__username').text();
+
+      $.ajax({method: "POST", data: {composedMessage: 'Start of new chat'}, url: `http://localhost:3000/api/chat/new/${this.messageWith}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+        .done(function(response) {
+          window.location = `/inbox`; // Send to inbox (later will have popup)
+      }.bind(this));
+    },
     // Perform Search
     performSearch(e){
       e.preventDefault(); //keep form from submitting
