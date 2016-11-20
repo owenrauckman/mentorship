@@ -77,7 +77,7 @@ exports.newConversation = function(req, res, next){
     if(err){
       return res.status(500).json({message: err.message});
     }
-
+    
     // check to see if conversation already exists
     Conversation.findOne( {$and: [{participants: req.user.id}, {participants: user.id}] }, function(err, convo, next){
       var conversatonToUse;

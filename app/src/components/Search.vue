@@ -39,7 +39,7 @@
           <div class="m__search__results__profile__header">
             <img v-if="user.avatar" class="m__search__results__profile__face" :src="user.avatar"/>
             <img v-else class="m__search__results__profile__face" src="../assets/face.jpg"/>
-            <a href="" v-touch:tap="sendChat" class="m__search__results__profile__connect">Connect</a>
+            <div v-touch:tap="sendChat" class="m__search__results__profile__connect">Connect</div>
           </div>
           <!-- info -->
           <div class="m__search__results__profile__info">
@@ -98,12 +98,21 @@ export default {
   methods: {
     sendChat(e){
       e.preventDefault();
-      this.messageWith = $(e.target).parents().find('.m__search__results__username').text();
+      this.messageWith = $(e.target).parent().parent().find('.m__search__results__username').text();
 
-      $.ajax({method: "POST", data: {composedMessage: 'Start of new chat'}, url: `http://localhost:3000/api/chat/new/${this.messageWith}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "GET", url: "http://sailmentorship.com:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
-          window.location = `/inbox`; // Send to inbox (later will have popup)
-      }.bind(this));
+          if(response.state == "success"){
+            $.ajax({method: "POST", data: {composedMessage: 'Start of new chat'}, url: `http://sailmentorship.com:3000/api/chat/new/${this.messageWith}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+              .done(function(response) {
+                window.location = `/#/inbox`; // Send to inbox (later will have popup)
+            }.bind(this));
+          }
+          else{
+            window.location = `/#/login`; 
+          }
+        }.bind(this));
+
     },
     // Perform Search
     performSearch(e){
@@ -115,7 +124,7 @@ export default {
         $('#js__m__search__filters__form__input__skills').addClass('m__search__filters__form__input--error');
       }
       else{
-        $.ajax({method: "GET", url: `http://localhost:3000/api/search?skill=${that.searchData.skill}&near=${that.searchData.near}&mentorType=${that.searchData.mentorType}`, context: this, crossDomain: true})
+        $.ajax({method: "GET", url: `http://sailmentorship.com:3000/api/search?skill=${that.searchData.skill}&near=${that.searchData.near}&mentorType=${that.searchData.mentorType}`, context: this, crossDomain: true})
           .done(function(response) {
             if(response){
               if(response.noResults){
@@ -399,18 +408,17 @@ ul, ol{
           right: 1rem;
           top: 50%;
           transform: translateY(-50%);
-          &:link, &:visited, &:active{
-            font-family: $lato;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            text-decoration: none;
-            padding: 0.5rem 1.5rem;
-            color: $white;
-            border: solid 1px $white;
-            border-radius: 5px;
-            transition: background 0.3s ease-in, color 0.3s ease-in;
-          }
+          font-family: $lato;
+          text-transform: uppercase;
+          font-size: 0.75rem;
+          text-decoration: none;
+          padding: 0.5rem 1.5rem;
+          color: $white;
+          border: solid 1px $white;
+          border-radius: 5px;
+          transition: background 0.3s ease-in, color 0.3s ease-in;
           &:hover{
+            cursor: pointer;
             background: transparentize($teal, 0.5);
           }
         }

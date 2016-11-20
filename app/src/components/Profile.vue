@@ -136,7 +136,7 @@ export default {
     // update Users
     update(){
       // ensure the necessary fields are filled out
-      $.ajax({method: "PUT", data: this.user, url: `http://localhost:3000/api/edit/${this.user.username}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "PUT", data: this.user, url: `http://sailmentorship.com:3000/api/edit/${this.user.username}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           if(response.user){
             this.user = response.user;
@@ -150,19 +150,19 @@ export default {
     // logout users
     logout(){
       // ensure the necessary fields are filled out
-      $.ajax({method: "GET", url: `http://localhost:3000/api/auth/logout`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "GET", url: `http://sailmentorship.com:3000/api/auth/logout`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           if(response.message = 'logged out'){
-            window.location = `/`;
+            window.location = `/#/`;
           }
       }.bind(this));
     },
     deleteUser(){
       // ensure the necessary fields are filled out
-      $.ajax({method: "DELETE", url: `http://localhost:3000/api/delete/${this.user.username}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "DELETE", url: `http://sailmentorship.com:3000/api/delete/${this.user.username}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           if(response.message = 'User has been deleted'){
-            window.location = `/`;
+            window.location = `/#/`;
           }
       }.bind(this));
     }
@@ -171,11 +171,11 @@ export default {
   mounted(){
     this.$nextTick(function () {
       var loggedInUser = {};
-      $.ajax({method: "GET", url: "http://localhost:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "GET", url: "http://sailmentorship.com:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           if(response.user){
             loggedInUser = response.user;
-            $.ajax({method: "GET", url: `http://localhost:3000/api/users/${loggedInUser.username}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+            $.ajax({method: "GET", url: `http://sailmentorship.com:3000/api/users/${loggedInUser.username}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
               .done(function(response) {
                 if(response){
                   // set arrays to strings so they don't show []'s
@@ -188,7 +188,7 @@ export default {
             }.bind(this));
           }
           else{
-            window.location = `/login`; // Send to login (in the future will auto login)
+            window.location = `/#/login`; // Send to login (in the future will auto login)
             this.isAuthenticated = response.message;
           }
         }.bind(this));

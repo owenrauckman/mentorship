@@ -60,7 +60,7 @@
 
 
 <script>
-var socket = io.connect('http://localhost:3000');
+// var socket = io.connect('http://sailmentorship.com:3000');
 
 export default {
   name: 'inbox',
@@ -81,7 +81,7 @@ export default {
       this.messageWith = $(e.target).parent().find('.m__inbox__list__item__name').text();
       this.conversationId = $(e.target).parent().find('.m__conversationId').text()
 
-      $.ajax({method: "GET", url: `http://localhost:3000/api/chat/${this.conversationId}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "GET", url: `http://sailmentorship.com:3000/api/chat/${this.conversationId}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           $('.m__chat').animate({'right': 0}, 250);
           this.chat = response.conversation;
@@ -101,7 +101,7 @@ export default {
       //   $('.m__chat__messages').append('<div class="m__chat__messages__message"><div class="m__chat__messages__message__text">' + msg + '</div></div>');
       // });
 
-      $.ajax({method: "POST", data: {composedMessage: this.inputMessage}, url: `http://localhost:3000/api/chat/new/${this.messageWith}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "POST", data: {composedMessage: this.inputMessage}, url: `http://sailmentorship.com:3000/api/chat/new/${this.messageWith}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           $('.m__chat__input__text').val('');
           // $('.m__chat__messages').scrollTop(1000);
@@ -112,10 +112,10 @@ export default {
   mounted(){
     this.$nextTick(function () {
       // check if is logged in
-      $.ajax({method: "GET", url: "http://localhost:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "GET", url: "http://sailmentorship.com:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           if(response.user == null){
-            window.location = `/login`;
+            window.location = `/#/login`;
           }
 
           this.loggedInUser = response.user.username;
@@ -123,7 +123,7 @@ export default {
 
 
           // Populate the inbox
-          $.ajax({method: "GET", url: "http://localhost:3000/api/chat/", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+          $.ajax({method: "GET", url: "http://sailmentorship.com:3000/api/chat/", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
             .done(function(response) {
               this.conversations = response.conversations;
 

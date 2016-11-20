@@ -32,11 +32,11 @@ export default {
       // ensure username and password are in
       if(this.user.username && this.user.password){
         var that = this;
-        $.ajax({method: "POST", data: this.user, url: "http://localhost:3000/api/auth/login", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+        $.ajax({method: "POST", data: this.user, url: "http://sailmentorship.com:3000/api/auth/login", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
           .done(function(response) {
             if(response.user){
               this.isAuthenticated = response.message;
-              window.location = `/profile`; //send them to their profile (will need to add auth to this route)
+              window.location = `/#/profile`; //send them to their profile (will need to add auth to this route)
             }
             else{
               this.isAuthenticated = response.message;
@@ -46,17 +46,17 @@ export default {
     },
     // --- Logout User --- //
     logout(){
-      $.ajax({method: "GET", url: "http://localhost:3000/api/auth/logout", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "GET", url: "http://sailmentorship.com:3000/api/auth/logout", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           this.isAuthenticated = response.message;
       });
     },
     authenticationCheck(){
-      $.ajax({method: "GET", url: "http://localhost:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "GET", url: "http://sailmentorship.com:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           this.isAuthenticated = response.message;
           if(response.state == "success"){
-            window.location = `/profile`;
+            window.location = `/#/profile`;
           }
       });
     }

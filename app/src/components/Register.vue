@@ -135,11 +135,11 @@ export default {
     register(){
       // ensure the necessary fields are filled out
       if(this.user.username && this.user.password && this.user.name && this.user.email){
-        $.ajax({method: "POST", data: this.user, url: "http://localhost:3000/api/auth/register", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+        $.ajax({method: "POST", data: this.user, url: "http://sailmentorship.com:3000/api/auth/register", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
           .done(function(response) {
             if(response.user){
               this.isAuthenticated = response.message;
-              window.location = `/login`; // Send to login (in the future will auto login)
+              window.location = `/#/login`; // Send to login (in the future will auto login)
             }
             else{
               this.isAuthenticated = response.message;
