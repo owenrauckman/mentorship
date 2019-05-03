@@ -8,11 +8,12 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local'),Strategy;
 var mongoose = require('mongoose');
 var cors = require('cors');
-mongoose.connect('mongodb://owen:owen123@ds145667.mlab.com:45667/mentorship');
+mongoose.connect('mongodb://localhost:27017/mentorship');
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 
 // --- Init App --- //
+var app = express();
 
 // --- Cors allows for Auth to work across different ports --- //
 app.use(cors({origin: 'http://sailmentorship.com', credentials: true}, {origin: 'http://www.sailmentorship.com', credentials: true}));
@@ -29,8 +30,8 @@ app.use(function(req, res, next) {
 });
 
 // --- BodyParser Middleware --- //
-app.use(bodyParser.json({extended: false, limit: '2mb'}));
-app.use(bodyParser.urlencoded({extended: false, limit: '2mb'}));
+app.use(bodyParser.json({extended: false}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
 // --- Express session --- //
@@ -39,13 +40,6 @@ app.use(session({
   saveUninitialized: true,
   resave: true
 }));
-
-
-// serve the client side rendered app
-var path = require('path');
-var serveStatic = require('serve-static');
-app.use(serveStatic(__dirname + "/../app/dist"));
-
 
 // --- Passport Init --- //
 app.use(passport.initialize());

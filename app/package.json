@@ -7,28 +7,10 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
-    "lint": "eslint --ext .js,.vue src",
-    "start": "node server/app.js"
-  },
-  "engines": {
-    "node": "^8.11.3",
-    "npm": "^5.6.0"
+    "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "bcrypt": "*",
-    "body-parser": "latest",
-    "cookie-parser": "^1.4.1",
-    "cookie-session": "^2.0.0-alpha.1",
-    "cors": "^2.8.1",
-    "express": "latest",
-    "express-session": "*",
     "jquery": "^3.1.1",
-    "mongoose": "latest",
-    "mongoose-hidden": "^0.6.4",
-    "passport": "*",
-    "passport-local": "*",
-    "serve-static": "^1.13.2",
-    "socket.io": "^1.5.1",
     "vue": "^2.0.1",
     "vue-router": "^2.0.1",
     "vue-touch": "git://github.com/vuejs/vue-touch.git#next"
@@ -52,7 +34,7 @@
     "eslint-plugin-promise": "^2.0.1",
     "eslint-plugin-standard": "^2.0.1",
     "eventsource-polyfill": "^0.9.6",
-    "express": "^4.16.4",
+    "express": "^4.13.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "function-bind": "^1.0.2",
