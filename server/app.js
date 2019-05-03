@@ -8,7 +8,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local'),Strategy;
 var mongoose = require('mongoose');
 var cors = require('cors');
-mongoose.connect('mongodb://owen:owen123@ds145667.mlab.com:45667/mentorship');
+mongoose.connect('mongodb://<user>:<pass>@ds145667.mlab.com:45667/mentorship');
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 
