@@ -4,7 +4,7 @@
       <div class="m__inbox__container">
         <ul class="m__inbox__list">
 
-          <li v-touch:tap="showChat" class="m__inbox__list__item"  v-for="(conversation, index) in conversations">
+          <li @click="showChat" class="m__inbox__list__item"  v-for="(conversation, index) in conversations">
             <span class="m__inbox__list__item__container" v-for="message in conversation">
               <div class="m__inbox__list__item--dot">
                 <span v-if="message.unread"class="m__inbox__list__item--dot--circle m__inbox__list__item--dot--circle--unread"></span>
@@ -27,7 +27,7 @@
     <!-- chat popup-->
     <div class="m__chat">
       <div class="m__chat__header">
-        <button v-touch:tap="hideChat" class="m__chat__header__arrow">
+        <button @click="hideChat" class="m__chat__header__arrow">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="1.5"><g fill="none" stroke="#fff" stroke-width="4"><path d="M80.362 167.044L13.315 99.996 80.362 32.95M13.315 99.996h173.37" stroke-width="18.9638"/></g></svg>
         </button>
         <div class="m__chat__header__name">{{messageWith}}</div>
@@ -49,7 +49,7 @@
 
       <div class="m__chat__input">
         <input class="m__chat__input__text" v-model="inputMessage" v-bind:placeholder="'Say something to ' + messageWith + '...'"></input>
-        <div v-touch:tap="sendChat" class="m__chat__input__send">
+        <div @click="sendChat" class="m__chat__input__send">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M130.4 191.01l-53.846-53.846L130.4 69.418l-67.746 53.846L8.808 69.418 191.194 8.622 130.4 191.01z" fill="#fff"/></svg>
         </div>
       </div>
@@ -81,7 +81,7 @@ export default {
       this.messageWith = $(e.target).parent().find('.m__inbox__list__item__name').text();
       this.conversationId = $(e.target).parent().find('.m__conversationId').text()
 
-      $.ajax({method: "GET", url: `http://sailmentorship.com:3000/api/chat/${this.conversationId}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "GET", url: `${window.location.origin}/api/chat/${this.conversationId}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           $('.m__chat').animate({'right': 0}, 250);
           this.chat = response.conversation;
@@ -101,7 +101,7 @@ export default {
       //   $('.m__chat__messages').append('<div class="m__chat__messages__message"><div class="m__chat__messages__message__text">' + msg + '</div></div>');
       // });
 
-      $.ajax({method: "POST", data: {composedMessage: this.inputMessage}, url: `http://sailmentorship.com:3000/api/chat/new/${this.messageWith}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "POST", data: {composedMessage: this.inputMessage}, url: `${window.location.origin}/api/chat/new/${this.messageWith}`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           $('.m__chat__input__text').val('');
           // $('.m__chat__messages').scrollTop(1000);
@@ -112,7 +112,7 @@ export default {
   mounted(){
     this.$nextTick(function () {
       // check if is logged in
-      $.ajax({method: "GET", url: "http://sailmentorship.com:3000/api/auth/isLoggedIn", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+      $.ajax({method: "GET", url: `${window.location.origin}/api/auth/isLoggedIn`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
         .done(function(response) {
           if(response.user == null){
             window.location = `/#/login`;
@@ -123,7 +123,7 @@ export default {
 
 
           // Populate the inbox
-          $.ajax({method: "GET", url: "http://sailmentorship.com:3000/api/chat/", context: this, xhrFields: {withCredentials: true}, crossDomain: true})
+          $.ajax({method: "GET", url: `${window.location.origin}:3000/api/chat/`, context: this, xhrFields: {withCredentials: true}, crossDomain: true})
             .done(function(response) {
               this.conversations = response.conversations;
 

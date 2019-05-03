@@ -16,9 +16,6 @@ import Login from './components/Login'
 import Navigation from './components/Navigation'
 import Register from './components/Register'
 
-// Use Vue Touch
-var VueTouch = require('vue-touch')
-Vue.use(VueTouch)
 
 // Instantiate the Router
 Vue.use(VueRouter)
